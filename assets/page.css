@@ -244,17 +244,9 @@ a {
   aspect-ratio: 8 / 1;
 }
 
-/* compact ramp shared by brands and chart palettes */
-.ramp.mini .stop {
-  aspect-ratio: auto;
-  min-height: var(--size-3);
-  font-size: var(--font-size--3);
-  padding: var(--size--3);
-}
-.ramp.mini.dim .stop {
-  aspect-ratio: auto;
-  min-height: var(--size-0);
-}
+/* compact ramp shared by brands and chart palettes: same corner layout as the
+   marquee ramp (number top-left, on bottom-right), just a smaller label. */
+.ramp.mini .stop,
 .ramp.mini .stop .on {
   font-size: var(--font-size--3);
 }

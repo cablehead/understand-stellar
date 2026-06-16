@@ -95,7 +95,7 @@ def mini-ramp [prefix: string, steps: list, labels: list] {
       let n = ($steps | get $i)
       (DIV {class: "stop" data-copy: $"($prefix)-($n)"
             style: {background: $"var\(($prefix)-($n)\)" color: $"var\(($prefix)-($n)-on\)"}}
-        (SPAN {class: "n"} ($labels | get $i))
+        (SPAN {class: "n"} $"($labels | get $i)")
         (SPAN {class: "on" data-copy: $"($prefix)-($n)-on"} "on"))
     }))
     (DIV {class: "ramp mini dim" style: {"grid-template-columns": $gtc}} ( 0..($cols - 1) | each {|i|
