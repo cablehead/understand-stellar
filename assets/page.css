@@ -117,7 +117,11 @@ a {
   font-size: var(--font-size-7);
   font-weight: var(--font-weight-extra-bold);
   letter-spacing: var(--font-letter-spacing--2);
-  line-height: var(--font-line-height--3);
+  /* the line-height tokens are absolute rems tuned to body sizes (scale tops
+     out near 1.9rem), so none fit a fluid display heading this large; a
+     unitless ratio scales the leading with the font and avoids overlap on
+     wrap. */
+  line-height: 1.05;
   margin: var(--size-2) 0 var(--size-1);
   text-wrap: balance;
 }
