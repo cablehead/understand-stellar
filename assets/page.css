@@ -107,6 +107,22 @@ a {
   background: var(--neutral-3);
 }
 
+/* quiet "view source" link, sits on its own line under the theme toggle */
+.source-link {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: var(--size--1);
+  margin-top: var(--size-1);
+  color: var(--neutral-1-dim);
+  text-decoration: none;
+  font-size: var(--font-size--1);
+}
+.source-link:hover {
+  color: var(--neutral-1-on);
+  text-decoration: underline;
+}
+
 .content {
   min-width: 0;
 }

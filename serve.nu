@@ -67,6 +67,10 @@ def sidebar [sections: list] {
       (ICONIFY "lucide:sun-moon" {width: "16" height: "16"})
       (SPAN {id: "theme-label"} "theme")
     )
+    (A {class: "source-link" href: "https://github.com/cablehead/understand-stellar" target: "_blank" rel: "noopener"}
+      (ICONIFY "simple-icons:github" {width: "15" height: "15"})
+      (SPAN "Source")
+    )
   )
 }
 
