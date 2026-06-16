@@ -35,8 +35,8 @@ def head-block [] {
   if (t === 'dark') document.documentElement.classList.add('dark');
 })();
 "})
-    (LINK {rel: "stylesheet" href: "/assets/stellar.css"})
-    (LINK {rel: "stylesheet" href: "/assets/page.css"})
+    (LINK {rel: "stylesheet" href: "assets/stellar.css"})
+    (LINK {rel: "stylesheet" href: "assets/page.css"})
     (SCRIPT-ICONIFY)
   )
 }
