@@ -514,7 +514,7 @@ def compose-script [] {
   var thing = document.getElementById('compose-thing');
   var code = document.getElementById('compose-code');
   var go = document.getElementById('compose-go');
-  var state = {prop:'scale', amount:'up', dur:'base', ease:'emphasized', active:false};
+  var state = {prop:'scale', amount:'up', dur:'slow', ease:'emphasized', active:false};
   var MAP = {
     scale: {prop:'transform', fn:'scale', tok:'--anim-scale-', def:'up'},
     rotate:{prop:'transform', fn:'rotate', tok:'--anim-rotate-', def:'md'},
@@ -545,16 +545,22 @@ def compose-script [] {
     var m=MAP[state.prop];
     thing.style.transition=m.prop+' var(--anim-duration-'+state.dur+') var(--anim-ease-'+state.ease+')';
   }
-  function applyTarget(){
-    thing.style.transform='none'; thing.style.opacity='1';
-    if(!state.active) return;
+  function rest(){ thing.style.transform='none'; thing.style.opacity='1'; }
+  function setTargetStyle(){
     var m=MAP[state.prop];
-    if(state.prop==='fade') thing.style.opacity='var('+m.tok+state.amount+')';
-    else thing.style.transform=m.fn+'(var('+m.tok+state.amount+'))';
+    if(state.prop==='fade'){ thing.style.transform='none'; thing.style.opacity='var('+m.tok+state.amount+')'; }
+    else { thing.style.opacity='1'; thing.style.transform=m.fn+'(var('+m.tok+state.amount+'))'; }
   }
+  function trigger(){
+    // clean restart: settle to rest with no transition, then animate to the
+    // target, so the full easing curve plays from the start on every change.
+    thing.style.transition='none'; rest(); void thing.offsetWidth;
+    applyTransition(); setTargetStyle();
+  }
+  function relax(){ applyTransition(); rest(); }
   function updateBtn(){ if(go){ go.textContent=state.active?'Reset':'Activate'; go.classList.toggle('on', state.active); } }
   root.addEventListener('click', function(e){
-    if(e.target.closest('#compose-go')){ state.active=!state.active; applyTransition(); applyTarget(); updateBtn(); return; }
+    if(e.target.closest('#compose-go')){ state.active=!state.active; if(state.active){ trigger(); } else { relax(); } updateBtn(); return; }
     if(e.target.closest('#compose-copy')){
       if(navigator.clipboard) navigator.clipboard.writeText(code.textContent);
       var t=document.getElementById('toast'); if(t){ t.textContent='copied CSS'; t.classList.add('show'); clearTimeout(window.__ct); window.__ct=setTimeout(function(){t.classList.remove('show');},1100); }
@@ -565,7 +571,7 @@ def compose-script [] {
     else if(c.hasAttribute('data-amount')){ state.amount=c.getAttribute('data-amount'); setActive('amount','data-amount',state.amount); }
     else if(c.hasAttribute('data-dur')){ state.dur=c.getAttribute('data-dur'); setActive('dur','data-dur',state.dur); }
     else if(c.hasAttribute('data-ease')){ state.ease=c.getAttribute('data-ease'); setActive('ease','data-ease',state.ease); }
-    applyTransition(); applyTarget(); render();
+    applyTransition(); if(state.active){ trigger(); } render();
   });
   setActive('prop','data-prop',state.prop);
   setActive('dur','data-dur',state.dur);
