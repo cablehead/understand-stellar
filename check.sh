@@ -17,3 +17,7 @@ http-nu eval -c '
   if ($html | str length) < 5000 { error make { msg: "page render too small" } }
   print $"render: ok \(($html | str length) bytes\)"
 '
+
+# coverage gate: every stellar.css token must be click-to-copy in the UI
+./tools/coverage.sh --gate
+echo "coverage: 100%"
