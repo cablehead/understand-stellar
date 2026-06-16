@@ -484,7 +484,7 @@ def compose-block [cfg: record] {
   } | flatten)
   (DIV {class: "block compose"}
     (H3 {class: "subhead"} "Compose")
-    (P {class: "note"} "Tokens are used together: a property, a duration, an easing, and (for transforms) an amount become one transition. Configure it, press Play to loop it and feel the curve, copy the CSS - this is how you actually reach for them.")
+    (P {class: "note"} "Tokens are used together: a property, a duration, an easing, and (for transforms) an amount become one transition. Configure it, toggle Activate to play the transition (changing any option replays it), copy the CSS - this is how you actually reach for them.")
     (DIV {class: "composer"}
       (DIV {class: "config"}
         (chip-row "property" "prop" ([scale rotate slide fade] | each {|p| BUTTON {class: "chip" data-prop: $p} $p}))
@@ -498,7 +498,7 @@ def compose-block [cfg: record] {
       )
       (DIV {class: "stage-col"}
         (DIV {class: "stage"} (DIV {id: "compose-thing" class: "thing"} "thing"))
-        (BUTTON {id: "compose-go" class: "go-btn"} "Play")
+        (BUTTON {id: "compose-go" class: "go-btn"} "Activate")
       )
     )
     (DIV {class: "compose-out"}
@@ -514,11 +514,11 @@ def compose-script [] {
   var thing = document.getElementById('compose-thing');
   var code = document.getElementById('compose-code');
   var go = document.getElementById('compose-go');
-  var state = {prop:'scale', amount:'up', dur:'slow', ease:'emphasized', playing:false};
+  var state = {prop:'slide', amount:'xl', dur:'slow', ease:'emphasized', active:false};
   var MAP = {
     scale: {prop:'transform', fn:'scale', tok:'--anim-scale-', def:'up'},
-    rotate:{prop:'transform', fn:'rotate', tok:'--anim-rotate-', def:'md'},
-    slide: {prop:'transform', fn:'translateX', tok:'--anim-distance-', def:'md'},
+    rotate:{prop:'transform', fn:'rotate', tok:'--anim-rotate-', def:'lg'},
+    slide: {prop:'transform', fn:'translateX', tok:'--anim-distance-', def:'xl'},
     fade:  {prop:'opacity', fn:null, tok:'--anim-opacity-', def:'muted'}
   };
   function chips(g){ return root.querySelectorAll('.chips[data-group="'+g+'"] .chip'); }
@@ -551,28 +551,19 @@ def compose-script [] {
     if(state.prop==='fade'){ thing.style.transform='none'; thing.style.opacity='var('+m.tok+state.amount+')'; }
     else { thing.style.opacity='1'; thing.style.transform=m.fn+'(var('+m.tok+state.amount+'))'; }
   }
-  // While playing, oscillate rest <-> target on the chosen duration+easing, with
-  // a hold each end. Repetition makes the easing legible (like the easing dots),
-  // and each leg is a smooth CSS transition - no snap, and chip changes are
-  // picked up on the next leg.
-  function tick(){
-    if(!state.playing) return;
-    applyTransition();
-    if(thing.__at==='target'){ rest(); thing.__at='rest'; }
-    else { setTargetStyle(); thing.__at='target'; }
-  }
-  function startLoop(){
-    state.playing=true;
-    applyTransition(); setTargetStyle(); thing.__at='target';
-    clearInterval(thing.__iv); thing.__iv=setInterval(tick, 900);
-  }
-  function stopLoop(){
-    state.playing=false; clearInterval(thing.__iv);
-    applyTransition(); rest(); thing.__at='rest';
-  }
-  function updateBtn(){ if(go){ go.textContent=state.playing?'Pause':'Play'; go.classList.toggle('on', state.playing); } }
+  // Active/inactive toggle that holds its state. Toggling animates rest<->target
+  // so you feel the easing. Changing any chip while active "replays": ease out to
+  // rest, then back in with the new setting - smooth (no snap), ends settled.
+  function goActive(){ applyTransition(); setTargetStyle(); thing.__phase='active'; }
+  function goRest(){ applyTransition(); rest(); thing.__phase='rest'; }
+  function replay(){ applyTransition(); rest(); thing.__phase='out'; }
+  thing.addEventListener('transitionend', function(e){
+    if(e.target!==thing) return;
+    if(thing.__phase==='out' && state.active){ applyTransition(); setTargetStyle(); thing.__phase='active'; }
+  });
+  function updateBtn(){ if(go){ go.textContent=state.active?'Reset':'Activate'; go.classList.toggle('on', state.active); } }
   root.addEventListener('click', function(e){
-    if(e.target.closest('#compose-go')){ if(state.playing){ stopLoop(); } else { startLoop(); } updateBtn(); return; }
+    if(e.target.closest('#compose-go')){ state.active=!state.active; if(state.active){ goActive(); } else { goRest(); } updateBtn(); return; }
     if(e.target.closest('#compose-copy')){
       if(navigator.clipboard) navigator.clipboard.writeText(code.textContent);
       var t=document.getElementById('toast'); if(t){ t.textContent='copied CSS'; t.classList.add('show'); clearTimeout(window.__ct); window.__ct=setTimeout(function(){t.classList.remove('show');},1100); }
@@ -583,12 +574,13 @@ def compose-script [] {
     else if(c.hasAttribute('data-amount')){ state.amount=c.getAttribute('data-amount'); setActive('amount','data-amount',state.amount); }
     else if(c.hasAttribute('data-dur')){ state.dur=c.getAttribute('data-dur'); setActive('dur','data-dur',state.dur); }
     else if(c.hasAttribute('data-ease')){ state.ease=c.getAttribute('data-ease'); setActive('ease','data-ease',state.ease); }
-    applyTransition(); render();
+    render();
+    if(state.active){ replay(); }
   });
   setActive('prop','data-prop',state.prop);
   setActive('dur','data-dur',state.dur);
   setActive('ease','data-ease',state.ease);
-  showAmounts(); applyTransition(); render(); updateBtn();
+  showAmounts(); render(); updateBtn();
 })();
 '##})
 }
