@@ -71,7 +71,7 @@ def color-ramp [name: string] {
       (DIV {class: "stop" data-copy: $"--($name)-($n)"
             style: {background: $"var\(--($name)-($n)\)" color: $"var\(--($name)-($n)-on\)"}}
         (SPAN {class: "n"} $"($n)")
-        (SPAN {class: "on"} "on")
+        (SPAN {class: "on" data-copy: $"--($name)-($n)-on"} "on")
       )
     }))
     (DIV {class: "ramp dim"} ( 1..12 | each {|n|
@@ -157,12 +157,14 @@ def color-section [cfg: record] {
 
     (if (not ($cfg.colors.code.disabled)) {
       let sample = "fn ramp(seed: Color, steps: i32) {\n    // derive tones from one seed\n    let scale = 1.618;\n    println!(\"generated {} tones\\n\", steps);\n}"
+      # every --code-* token, read from the generated CSS so the list stays complete
+      let code_tokens = (open --raw ($env.PWD | path join "assets/stellar.css") | decode utf-8 | parse -r '(--code-[a-z0-9-]+):' | get capture0 | uniq | sort)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Code & syntax")
-        (P {class: "note"} "A full syntax palette, derived from the theme and inverted for dark mode.")
+        (P {class: "note"} "The full syntax palette, derived from the theme and inverted for dark mode. Every token below is what the highlighter emits.")
         (DIV {class: "code-demo"}
           (PRE (CODE ($sample | .highlight rust))))
-        (DIV {class: "token-row"} ( [--code-bg --code-fg --code-comment --code-keyword --code-string --code-number --code-name-function --code-type --code-name-variable --code-string-escape --code-error --code-inserted --code-deleted] | each {|t| token $t } ))
+        (DIV {class: "token-row"} ( $code_tokens | each {|t| token $t } ))
       )
     })
   )
@@ -188,7 +190,7 @@ def type-section [cfg: record] {
     )
 
     (if (not ($cfg.fonts.families.disabled)) {
-      let fams = ($cfg.fonts.families.values | get name)
+      let fams = ($cfg.fonts.families.values | get name | filter {|f| $f != "system-ui"})
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Families")
         (P {class: "note"} "Each is a ready-made font stack with system fallbacks - a different typographic voice. Reach for --font-sans on UI and body text, --font-mono for code and figures, --font-serif for long-form; the rest are character choices. The same sentence is set in each so you can compare. " (token "--font-{name}") ".")
@@ -387,12 +389,12 @@ def layout-section [cfg: record] {
       let vmax = ($cfg.general.viewport.max)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Viewport bounds")
-        (P {class: "note"} $"Every fluid token - the type scale, the spacing scale, the rest - interpolates with clamp\(\) across this window. At ($vmin)px and narrower it sits at its smallest; at ($vmax)px and wider, its largest; it scales linearly between. You rarely set these directly - they are the anchors the whole responsive system is tuned to. Reach for them when you want a media query or your own fluid value to line up with the scales. --viewport-base-font-size is the rem basis underneath it all.")
+        (P {class: "note"} $"Every fluid token - the type scale, the spacing scale, the rest - interpolates with clamp\(\) across this window. At ($vmin)px and narrower it sits at its smallest; at ($vmax)px and wider, its largest; it scales linearly between. You rarely set these directly - they are the anchors the whole responsive system is tuned to. Reach for them when you want a media query or your own fluid value to line up with the scales.")
         (DIV {class: "viewport-range"}
           (SPAN {class: "vp-edge"} $"($vmin)px")
           (DIV {class: "vp-bar"} "fluid scaling")
           (SPAN {class: "vp-edge"} $"($vmax)px"))
-        (DIV {class: "token-row"} (token "--viewport-min") (token "--viewport-max") (token "--viewport-base-font-size"))
+        (DIV {class: "token-row"} (token "--viewport-min") (token "--viewport-max"))
       )
     })
   )
@@ -417,8 +419,9 @@ def compose-block [cfg: record] {
     slide: ($cfg.animations.distances.named | get name)
     fade: ($cfg.animations.opacities.named | get name)
   }
+  let amount_pfx = {scale: "anim-scale", rotate: "anim-rotate", slide: "anim-distance", fade: "anim-opacity"}
   let amount_chips = ($amount_sets | items {|prop, names|
-    $names | each {|a| (BUTTON {class: "chip" data-set: $prop data-amount: $a} $a) }
+    $names | each {|a| (BUTTON {class: "chip" data-set: $prop data-amount: $a data-copy: $"--($amount_pfx | get $prop)-($a)"} $a) }
   } | flatten)
   (DIV {class: "block compose"}
     (H3 {class: "subhead"} "Compose")
@@ -428,11 +431,11 @@ def compose-block [cfg: record] {
         (chip-row "property" "prop" ([scale rotate slide fade] | each {|p| BUTTON {class: "chip" data-prop: $p} $p}))
         (chip-row "amount" "amount" $amount_chips)
         (chip-row "duration" "dur" (
-          ($durs | each {|d| BUTTON {class: "chip" data-dur: $d} $d})
+          ($durs | each {|d| BUTTON {class: "chip" data-dur: $d data-copy: $"--anim-duration-($d)"} $d})
           | append (SPAN {class: "chip-sep"} "steps")
-          | append ($dnums | each {|n| BUTTON {class: "chip chip-num" data-dur: $"($n)"} $"($n)"})
+          | append ($dnums | each {|n| BUTTON {class: "chip chip-num" data-dur: $"($n)" data-copy: $"--anim-duration-($n)"} $"($n)"})
         ))
-        (chip-row "easing" "ease" ($eases | each {|e| BUTTON {class: "chip" data-ease: $e} $e}))
+        (chip-row "easing" "ease" ($eases | each {|e| BUTTON {class: "chip" data-ease: $e data-copy: $"--anim-ease-($e)"} $e}))
       )
       (DIV {class: "stage-col"}
         (DIV {class: "stage"} (DIV {id: "compose-thing" class: "thing"} "thing"))
