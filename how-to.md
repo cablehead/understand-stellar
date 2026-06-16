@@ -30,8 +30,8 @@ www-next-gen layers on top:                   v
   assets/brand.css  the brand-blue surface, nav, landing hero (colors from named seeds)
 ```
 
-Everything draws from the stellar custom properties. Style raw tags first;
-reach for utilities, then components, only when elements cannot carry it.
+Everything draws from the stellar custom properties. Style raw tags first; reach
+for utilities, then components, only when elements cannot carry it.
 
 ## The binary and key
 
@@ -45,17 +45,17 @@ reach for utilities, then components, only when elements cannot carry it.
 `stellar.config.json` is one file describing the whole design system. Top-level
 sections and what they generate:
 
-| Section | Generates |
-| --- | --- |
-| `colors.theme` | `--primary/secondary/tertiary/neutral/neutral-variant/error-1..12` (each `-on`, `-dim`). Derived from an image palette + `theory`/`colorIdx`. |
-| `colors.named` | `--named-<brand>-<n>` ramps from explicit hex seeds (each `-on`, `-dim`). **This is where the www palette lives.** |
-| `colors.charts` | `--chart-qualitative-*`, `--chart-diverging-*` |
-| `colors.gradients` / `shadows` / `code` | `--gradient-*`, `--shadow--4..6`, `--code-*` syntax colors |
-| `fonts` | `--font-{sans,serif,mono,...}`, `--font-size--2..N`, `--font-weight-*`, `--font-line-height-*`, `--font-letter-spacing-*` |
-| `general.size` | `--size--2..N` (the one spacing/sizing scale) |
-| `general.{zindexes,aspectRatio,viewport}` | `--zindex-*`, `--aspect-ratio-*`, viewport bounds |
-| `borders` | `--border-width-*`, `--border-radius-*`, organic blob/drawn radii |
-| `animations` | `--anim-ease-*`, `--anim-duration-*`, `--anim-{scale,rotate,distance,opacity}-*` |
+| Section                                   | Generates                                                                                                                                     |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `colors.theme`                            | `--primary/secondary/tertiary/neutral/neutral-variant/error-1..12` (each `-on`, `-dim`). Derived from an image palette + `theory`/`colorIdx`. |
+| `colors.named`                            | `--named-<brand>-<n>` ramps from explicit hex seeds (each `-on`, `-dim`). **This is where the www palette lives.**                            |
+| `colors.charts`                           | `--chart-qualitative-*`, `--chart-diverging-*`                                                                                                |
+| `colors.gradients` / `shadows` / `code`   | `--gradient-*`, `--shadow--4..6`, `--code-*` syntax colors                                                                                    |
+| `fonts`                                   | `--font-{sans,serif,mono,...}`, `--font-size--2..N`, `--font-weight-*`, `--font-line-height-*`, `--font-letter-spacing-*`                     |
+| `general.size`                            | `--size--2..N` (the one spacing/sizing scale)                                                                                                 |
+| `general.{zindexes,aspectRatio,viewport}` | `--zindex-*`, `--aspect-ratio-*`, viewport bounds                                                                                             |
+| `borders`                                 | `--border-width-*`, `--border-radius-*`, organic blob/drawn radii                                                                             |
+| `animations`                              | `--anim-ease-*`, `--anim-duration-*`, `--anim-{scale,rotate,distance,opacity}-*`                                                              |
 
 **The www palette is seeded as named colors** (see `www-next-gen`'s config):
 `ocean #0077B6` (surface, light), `navy` (surface, dark), `sand #f4d9a0`
@@ -95,7 +95,7 @@ A request like "make the site Source Sans 3 / Source Code Pro at an 18px base"
 belongs **in the config**, not in a CSS override. Overriding `--font-sans`
 /`--font-mono` at `:root`, or bumping `body` to `--font-size-1`, fights the
 system. Editing the config and regenerating makes every token carry the right
-value, and the downstream CSS gets *simpler* (the hero's explicit `font-family`
+value, and the downstream CSS gets _simpler_ (the hero's explicit `font-family`
 lines become dead code you delete).
 
 1. Migrate + confirm `stellar gen` works (above).
@@ -103,8 +103,8 @@ lines become dead code you delete).
 2. Edit `stellar.config.json`:
 
    - **Families** are `fonts.families.values` entries of `{name, faces}`.
-     `--font-sans` is the family named `sans`; `--font-mono` is `mono`. Lead each
-     stack with the face you want:
+     `--font-sans` is the family named `sans`; `--font-mono` is `mono`. Lead
+     each stack with the face you want:
 
      ```jsonc
      // fonts.families.values[name=="sans"].faces
@@ -124,25 +124,26 @@ lines become dead code you delete).
      That emits `:root { font-size: 112.5% }`, so `1rem` (= `--font-size-0`, the
      body size) becomes 18px and the whole fluid scale scales with it,
      proportions preserved. (Want only body bigger, headings untouched? Use
-     `body { font-size: var(--font-size-1) }` instead - but the multiplier is the
-     cleaner match to www.)
+     `body { font-size: var(--font-size-1) }` instead - but the multiplier is
+     the cleaner match to www.)
 
 3. Regenerate (step 2-3 above). Verified output after these edits:
    `--font-sans: "Source Sans 3", system-ui, sans-serif`,
-   `--font-mono: "Source Code Pro", ui-monospace, ...`, `:root{font-size:112.5%}`.
+   `--font-mono: "Source Code Pro", ui-monospace, ...`,
+   `:root{font-size:112.5%}`.
 
 4. Delete what's now redundant: the hero's explicit Source Sans 3 / Source Code
    Pro `font-family` lines, and any `:root` `--font-*` overrides. Everything
-   already inherits from `--font-sans` / `--font-mono`. That is the test of doing
-   it right: the change *removes* CSS instead of adding it.
+   already inherits from `--font-sans` / `--font-mono`. That is the test of
+   doing it right: the change _removes_ CSS instead of adding it.
 
 ## Self-hosting the fonts
 
-The stellar token only *names* a stack (`"Source Sans 3", ...`); it does not
+The stellar token only _names_ a stack (`"Source Sans 3", ...`); it does not
 ship the font. Right now `www.nu` pulls Source Sans 3 / Source Code Pro from
-**Google Fonts** (a `<link>` in the head), and `stellar.css` *also*
-`@import`s a CDN font (`inter`/`inconsolata` from bunny.net) you do not even use.
-To self-host and drop both third-party requests:
+**Google Fonts** (a `<link>` in the head), and `stellar.css` _also_ `@import`s a
+CDN font (`inter`/`inconsolata` from bunny.net) you do not even use. To
+self-host and drop both third-party requests:
 
 1. **Turn off stellar's CDN import.** In `stellar.config.json` set
    `settings.export.includeFontImports: false`, regenerate. That removes the
@@ -154,24 +155,25 @@ To self-host and drop both third-party requests:
 2. **Get the files.** Both families are SIL OFL (free to self-host). Grab the
    **variable** `woff2` (one file covers every weight) from Google Fonts
    (download family), [fontsource](https://fontsource.org)
-   (`@fontsource-variable/source-sans-3`, `@fontsource-variable/source-code-pro`),
-   or Adobe's repos. `woff2` alone covers every browser you care about.
+   (`@fontsource-variable/source-sans-3`,
+   `@fontsource-variable/source-code-pro`), or Adobe's repos. `woff2` alone
+   covers every browser you care about.
 
 3. **Place + serve.** Drop the files in `assets/`. http-nu's `.static` already
-   returns the right type (`/x.woff2 -> font/woff2`, verified). **Route caveat:**
-   the current `(route {path-matches: "/assets/:file"} ...)` matches **one** path
-   segment, so keep fonts flat (`assets/source-sans-3.woff2`) or widen the route
-   to serve `assets/fonts/...` (match the rest of the path and pass it to
-   `.static`).
+   returns the right type (`/x.woff2 -> font/woff2`, verified). **Route
+   caveat:** the current `(route {path-matches: "/assets/:file"} ...)` matches
+   **one** path segment, so keep fonts flat (`assets/source-sans-3.woff2`) or
+   widen the route to serve `assets/fonts/...` (match the rest of the path and
+   pass it to `.static`).
 
-4. **Add `@font-face`** (in `base.css`, or a small `fonts.css` linked first). The
-   `font-family` must match the stellar token name **exactly**:
+4. **Add `@font-face`** (in `base.css`, or a small `fonts.css` linked first).
+   The `font-family` must match the stellar token name **exactly**:
 
    ```css
    @font-face {
-     font-family: "Source Sans 3";          /* must equal the --font-sans name */
+     font-family: "Source Sans 3"; /* must equal the --font-sans name */
      src: url("/assets/source-sans-3.woff2") format("woff2");
-     font-weight: 100 900;                   /* variable: one face, all weights */
+     font-weight: 100 900; /* variable: one face, all weights */
      font-display: swap;
    }
    @font-face {
@@ -194,20 +196,22 @@ To self-host and drop both third-party requests:
 
 This cost us a long detour, so internalize it.
 
-Stellar's **fluid** `--anim-duration-*` and `--anim-{scale,rotate,distance,
-opacity}-*` tokens encode a viewport-responsive value using `calc()` with a
-`clamp()` progress factor built by **length division** (`(100vw - 320px) /
-(1440px - 320px)`). That division (`<length> / <length> -> <number>`) is CSS
-Values 4 and **not yet Baseline**:
+Stellar's **fluid** `--anim-duration-*` and
+`--anim-{scale,rotate,distance,
+opacity}-*` tokens encode a viewport-responsive
+value using `calc()` with a `clamp()` progress factor built by **length
+division** (`(100vw - 320px) /
+(1440px - 320px)`). That division
+(`<length> / <length> -> <number>`) is CSS Values 4 and **not yet Baseline**:
 
-| Engine | length-division | fluid duration/transform tokens |
-| --- | --- | --- |
-| Chrome/Chromium >= ~146 | yes | **work** (verified: real ~346ms transition) |
-| Safari/WebKit 26+ | yes | **work** |
-| Firefox (current) | **no** | resolve to `0s` / `0` (instant) |
-| Chromium <= ~139 | no | broken (note: old Playwright bundles!) |
+| Engine                  | length-division | fluid duration/transform tokens             |
+| ----------------------- | --------------- | ------------------------------------------- |
+| Chrome/Chromium >= ~146 | yes             | **work** (verified: real ~346ms transition) |
+| Safari/WebKit 26+       | yes             | **work**                                    |
+| Firefox (current)       | **no**          | resolve to `0s` / `0` (instant)             |
+| Chromium <= ~139        | no              | broken (note: old Playwright bundles!)      |
 
-(Stellar v0.0.1 was worse: the clamp mixed units and was invalid in *every*
+(Stellar v0.0.1 was worse: the clamp mixed units and was invalid in _every_
 browser - upstream issue `starfederation/datastar-pro#106`, fixed in 0.0.2.)
 
 What this means for `www-next-gen`:
@@ -216,10 +220,11 @@ What this means for `www-next-gen`:
   are **fine everywhere** - they never need length-division.
 - If you use a fluid `--anim-duration-*` or `--anim-scale-*` in a real
   `transition`/`animation`, it works in Chrome/Safari and is **instant in
-  Firefox**. Either accept that, gate behind `@supports`/`CSS.supports(
-  'z-index','calc(100px / 50px)')`, or make durations **static** in the config
-  (so they emit plain `0.18s` values that work everywhere). For a public site,
-  prefer static durations or a fallback.
+  Firefox**. Either accept that, gate behind
+  `@supports`/`CSS.supports(
+  'z-index','calc(100px / 50px)')`, or make
+  durations **static** in the config (so they emit plain `0.18s` values that
+  work everywhere). For a public site, prefer static durations or a fallback.
 
 ## Verifying CSS behavior across engines
 
@@ -242,11 +247,11 @@ require that, or `npx playwright@latest install --with-deps`.
   the closure's return replaces the **whole** match; `get` rejects negative
   indices (guard `$idx - 1` before calling).
 - **README-as-docs** is handled by `readme.nu` (`from md --verbose` AST):
-  `pages [groups]` slices by heading source line (code fences never mistaken
-  for headings), `anchor-map` routes intra-doc links to their owning page,
-  `render-page` rebases headings and rewrites links by HTML `href` attribute
-  (do **not** rewrite on raw markdown - it was fragile). The README is the
-  single source of truth; `www.nu` reads it live at handler load.
+  `pages [groups]` slices by heading source line (code fences never mistaken for
+  headings), `anchor-map` routes intra-doc links to their owning page,
+  `render-page` rebases headings and rewrites links by HTML `href` attribute (do
+  **not** rewrite on raw markdown - it was fragile). The README is the single
+  source of truth; `www.nu` reads it live at handler load.
 - **Light/dark** is stellar's `:root.dark` overrides; toggle the `dark` class on
   `<html>` and restore it before paint (inline script) to avoid a flash.
 - **Use this project as the token reference.** Run `understand-stellar`

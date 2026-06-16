@@ -6,15 +6,15 @@ generates, grouped by the decision it serves and demonstrated visually rather
 than just named. Click any token to copy its variable name; toggle the theme to
 check both light and dark.
 
-Built with [http-nu](https://http-nu.cross.stream): the page is a single
-Nushell handler using the embedded HTML DSL and router.
+Built with [http-nu](https://http-nu.cross.stream): the page is a single Nushell
+handler using the embedded HTML DSL and router.
 
 ## Stellar is made by Star Federation, go buy it
 
 Stellar CSS is built by [Star Federation](https://github.com/starfederation),
-the team behind [Datastar](https://data-star.dev). It ships as part of **Datastar
-Pro**, a one-time, lifetime license that also funds all the open-source Datastar
-work.
+the team behind [Datastar](https://data-star.dev). It ships as part of
+**Datastar Pro**, a one-time, lifetime license that also funds all the
+open-source Datastar work.
 
 This little reference only exists because Stellar is worth understanding, and
 worth paying for: a complete, configurable design system as plain CSS custom
@@ -32,9 +32,9 @@ Each family is shown with a visual metaphor, not a list:
   visible in place; a band below samples each `-dim` variant. Plus named brand
   ramps, chart palettes (qualitative + diverging), gradients, and a live syntax
   palette rendered through the highlighter.
-- **Type** - the fluid size scale set as real specimens, every font family
-  shown with the same sentence, weights as a ramp, and line-height /
-  letter-spacing demonstrated on real paragraphs.
+- **Type** - the fluid size scale set as real specimens, every font family shown
+  with the same sentence, weights as a ramp, and line-height / letter-spacing
+  demonstrated on real paragraphs.
 - **Space** - the size scale as bars whose width is the token value, so the
   geometric rhythm is visible.
 - **Borders & radius** - boxes with the radius and width applied directly, plus
