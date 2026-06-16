@@ -339,76 +339,7 @@ def elevation-section [cfg: record] {
 def motion-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "motion" "Motion"
-      "The building blocks of animation: easing curves, durations and transform presets. Compose them for transitions and keyframes, an easing for how a change accelerates, a duration for how long it runs, a transform preset for how far something scales, rotates or moves. Reach for the same tokens everywhere to keep motion consistent. The demos below are interactive so you can feel each one.")
-
-    (DIV {class: "block"}
-      (H3 {class: "subhead"} "Easing")
-      (P {class: "note"} "How a change accelerates over time. Use standard for most UI, entrance or emphasized to draw attention, a bounce or elastic for character. Press play to send the dot across the track with that easing. " (token "--anim-ease-{name}") ".")
-      (DIV {class: "motion-grid"} ( ($cfg.animations.easings | get name) | each {|e|
-        (DIV {class: "motion-card" data-copy: $"--anim-ease-($e)"}
-          (DIV {class: "head"} (STRONG $e) (token $"--anim-ease-($e)") (play-btn))
-          (DIV {class: "ease-track"}
-            (DIV {class: "ease-dot" data-ease: $"--anim-ease-($e)"})))
-      }))
-    )
-
-    (if (not ($cfg.animations.durations.disabled)) {
-      let dn = ($cfg.animations.durations)
-      let all = (($dn.named | get name) | append ((steps $dn.negativeSteps $dn.positiveSteps) | each {|n| $"($n)"}))
-      (DIV {class: "block"}
-        (H3 {class: "subhead"} "Duration")
-        (P {class: "note"} "How long a transition runs. Use fast for small hover or toggle feedback, base for most transitions, slow for larger or more deliberate moves. Named aliases read clearly in code; numeric steps give finer control. Press play to pulse the bar, which transitions on the real token, so a fast one visibly beats quicker than a slow one. (Instant in browsers without CSS length-division, e.g. Firefox.)")
-        (DIV ( $all | each {|d|
-          (DIV {class: "dur-row" data-copy: $"--anim-duration-($d)"}
-            (token $"--anim-duration-($d)")
-            (DIV {class: "dur-track"}
-              (DIV {class: "dur-fill" style: {transition: $"width var\(--anim-duration-($d)\) linear"}}))
-            (play-btn))
-        }))
-      )
-    })
-
-    (DIV {class: "block"}
-      (H3 {class: "subhead"} "Transforms")
-      (P {class: "note"} "Preset amounts for the four things you animate most: how much to scale, rotate, slide (distance) or fade (opacity). Use a subtle step for hover feedback, a stronger one for entrances or attention. Press play on a tile to run its preset.")
-
-      (P {class: "tf-label"} "scale")
-      (if (not ($cfg.animations.scales.disabled)) {
-        (DIV {class: "transforms"} ( $cfg.animations.scales.named | each {|s|
-          (DIV {class: "tf-item" data-copy: $"--anim-scale-($s.name)"}
-            (DIV {class: "tf-stage"} (DIV {class: "tf-box tf-scale" style: {"--tf-to": $"var\(--anim-scale-($s.name)\)"}} "scale"))
-            (DIV {class: "tf-foot"} (token $"--anim-scale-($s.name)") (play-btn)))
-        }))
-      })
-
-      (P {class: "tf-label"} "rotate")
-      (if (not ($cfg.animations.rotations.disabled)) {
-        (DIV {class: "transforms"} ( $cfg.animations.rotations.named | each {|r|
-          (DIV {class: "tf-item" data-copy: $"--anim-rotate-($r.name)"}
-            (DIV {class: "tf-stage"} (DIV {class: "tf-box tf-rotate" style: {"--tf-to": $"var\(--anim-rotate-($r.name)\)"}} "rotate"))
-            (DIV {class: "tf-foot"} (token $"--anim-rotate-($r.name)") (play-btn)))
-        }))
-      })
-
-      (P {class: "tf-label"} "distance")
-      (if (not ($cfg.animations.distances.disabled)) {
-        (DIV {class: "transforms"} ( $cfg.animations.distances.named | each {|d|
-          (DIV {class: "tf-item" data-copy: $"--anim-distance-($d.name)"}
-            (DIV {class: "tf-stage tf-stage-slide"} (DIV {class: "tf-box tf-slide" style: {"--tf-to": $"var\(--anim-distance-($d.name)\)"}} "slide"))
-            (DIV {class: "tf-foot"} (token $"--anim-distance-($d.name)") (play-btn)))
-        }))
-      })
-
-      (P {class: "tf-label"} "opacity")
-      (if (not ($cfg.animations.opacities.disabled)) {
-        (DIV {class: "transforms"} ( $cfg.animations.opacities.named | each {|o|
-          (DIV {class: "tf-item" data-copy: $"--anim-opacity-($o.name)"}
-            (DIV {class: "tf-stage"} (DIV {class: "tf-box tf-fade" style: {"--tf-to": $"var\(--anim-opacity-($o.name)\)"}} "fade"))
-            (DIV {class: "tf-foot"} (token $"--anim-opacity-($o.name)") (play-btn)))
-        }))
-      })
-    )
-
+      "Motion is three tokens working together. An easing (--anim-ease-*) shapes how a change accelerates and settles - standard for most UI, entrance or emphasized to pull the eye, a bounce or elastic for character. A duration (--anim-duration-*) sets how long it takes - fast for hover and toggle feedback, base for most transitions, slow for larger or more deliberate moves. A transform amount (--anim-scale-*, -rotate-*, -distance-*, -opacity-*) says how far it goes - how much to grow, turn, slide, or fade. You spend them together in one rule - transition: <property> <duration> <easing> - with the amount as the value it animates to. Build one below, play it, and copy the exact CSS.")
     (compose-block $cfg)
   )
 }
@@ -484,7 +415,7 @@ def compose-block [cfg: record] {
   } | flatten)
   (DIV {class: "block compose"}
     (H3 {class: "subhead"} "Compose")
-    (P {class: "note"} "Tokens are used together: a property, a duration, an easing, and (for transforms) an amount become one transition. Configure it, toggle Activate to play the transition (changing any option replays it), copy the CSS - this is how you actually reach for them.")
+    (P {class: "note"} "Pick a property, an amount, a duration, and an easing; toggle Activate to play the transition (changing any chip replays it), then copy the rule below. The box on the right is exactly what you would ship.")
     (DIV {class: "composer"}
       (DIV {class: "config"}
         (chip-row "property" "prop" ([scale rotate slide fade] | each {|p| BUTTON {class: "chip" data-prop: $p} $p}))
@@ -601,16 +532,6 @@ document.addEventListener('click', function(e){
     setLabel();
     return;
   }
-  var pb = e.target.closest('[data-act=\"play\"]');
-  if (pb){
-    var card = pb.closest('.motion-card');
-    var row = pb.closest('.dur-row');
-    var tile = pb.closest('.tf-item');
-    if (card) playEase(card.querySelector('.ease-dot'));
-    else if (row) playDur(row.querySelector('.dur-fill'));
-    else if (tile) playTf(tile.querySelector('.tf-box'));
-    return;
-  }
   var c = e.target.closest('[data-copy]');
   if (c){
     var name = c.getAttribute('data-copy');
@@ -629,51 +550,7 @@ document.addEventListener('click', function(e){
   }
 });
 
-function playEase(dot){
-  if (!dot) return;
-  dot.getAnimations().forEach(function(a){ a.cancel(); });
-  try {
-    var name = dot.getAttribute('data-ease');
-    var ease = getComputedStyle(document.documentElement).getPropertyValue(name).trim() || 'linear';
-    dot.animate(
-      [{left: '0%'}, {left: '100%'}],
-      {duration: 1200, easing: ease, iterations: 2, direction: 'alternate'}
-    );
-  } catch (err) {}
-}
-function playTf(box){
-  if (!box) return;
-  // .playing transitions the box to the token's value; remove it to ease back.
-  box.classList.add('playing');
-  clearTimeout(box.__t);
-  box.__t = setTimeout(function(){ box.classList.remove('playing'); }, 650);
-}
-
-function playDur(fill){
-  if (!fill) return;
-  // The fill carries `transition: width var(--anim-duration-X) linear`, so each
-  // width toggle takes the real token duration. Pulse a few legs so the tempo -
-  // fast vs slow - reads. Instant where length-division is unsupported (Firefox).
-  var legs = 6;
-  fill.ontransitionend = function(){
-    legs -= 1;
-    if (legs <= 0){ fill.ontransitionend = null; fill.style.width = '0%'; return; }
-    fill.style.width = (fill.style.width === '100%') ? '0%' : '100%';
-  };
-  clearTimeout(fill.__t);
-  fill.__t = setTimeout(function(){ fill.ontransitionend = null; fill.style.width = '0%'; }, 6000);
-  fill.style.width = '0%';
-  void fill.offsetWidth;
-  fill.style.width = '100%';
-}
-
 "})
-}
-
-# A small play button that triggers an adjacent motion demo. Clicking it
-# plays; clicking the item itself copies the token (handled in the script).
-def play-btn [] {
-  (BUTTON {class: "play-btn" title: "Play" data-act: "play"} (ICONIFY "lucide:play" {width: "13" height: "13"}))
 }
 
 {|req|
