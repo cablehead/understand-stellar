@@ -28,6 +28,18 @@ def head-block [] {
     (META {charset: "utf-8"})
     (META {name: "viewport" content: "width=device-width, initial-scale=1"})
     (TITLE "understand stellar")
+    (META {name: "description" content: "A visual reference for the Stellar CSS framework: every design token shown visually, not just named. Click any token to copy it; toggle light and dark."})
+    (META {property: "og:type" content: "website"})
+    (META {property: "og:title" content: "understand stellar"})
+    (META {property: "og:description" content: "Every Stellar CSS design token, shown visually. Click any token to copy it."})
+    (META {property: "og:url" content: "https://cablehead.github.io/understand-stellar/"})
+    (META {property: "og:image" content: "https://cablehead.github.io/understand-stellar/assets/og.png"})
+    (META {property: "og:image:width" content: "1200"})
+    (META {property: "og:image:height" content: "630"})
+    (META {name: "twitter:card" content: "summary_large_image"})
+    (META {name: "twitter:title" content: "understand stellar"})
+    (META {name: "twitter:description" content: "Every Stellar CSS design token, shown visually. Click any token to copy it."})
+    (META {name: "twitter:image" content: "https://cablehead.github.io/understand-stellar/assets/og.png"})
     (SCRIPT {__html: "
 (function(){
   var t = localStorage.getItem('theme');

@@ -1,10 +1,28 @@
-# understand-stellar
+<h1 align="center">understand stellar</h1>
 
-A visual reference for the [Stellar](https://github.com/starfederation/stellar)
-CSS framework. One scrolling page that shows every design variable Stellar
-generates, grouped by the decision it serves and demonstrated visually rather
-than just named. Click any token to copy its variable name; toggle the theme to
-check both light and dark.
+<p align="center">
+  <a href="https://cablehead.github.io/understand-stellar/">
+    <img alt="understand stellar - every Stellar CSS design token, shown visually" src="./assets/og.png" width="640" />
+  </a>
+</p>
+
+<p align="center">
+  A visual reference for the <a href="https://github.com/starfederation/stellar">Stellar</a> CSS framework:
+  every design token, shown visually rather than just named.
+  <br /><br />
+  <a href="https://cablehead.github.io/understand-stellar/">Live site</a>
+  &nbsp;&middot;&nbsp;
+  <a href="#what-it-covers">What it covers</a>
+  &nbsp;&middot;&nbsp;
+  <a href="#run">Run</a>
+  &nbsp;&middot;&nbsp;
+  <a href="https://data-star.dev/pro">Buy Stellar</a>
+</p>
+
+One scrolling page that shows every design variable Stellar generates, grouped
+by the decision it serves and demonstrated visually rather than just named.
+Click any token to copy its variable name; toggle the theme to check both light
+and dark.
 
 Built with [http-nu](https://http-nu.cross.stream): the page is a single Nushell
 handler using the embedded HTML DSL and router.
@@ -81,4 +99,6 @@ the page in sync. Sections whose config block is `disabled` are skipped.
 - `assets/stellar.css` - vendored generated tokens.
 - `assets/page.css` - layout and demonstration styling, built on Stellar tokens.
 - `stellar.config.json` - vendored config the page reads at startup.
+- `assets/og.png` - the social card, regenerate with `node tools/og.cjs`.
+- `tools/` - build, audit, and capture scripts; see `tools/README.md`.
 - `screenshots/` - preview captures in both themes.
