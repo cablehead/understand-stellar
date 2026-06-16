@@ -47,7 +47,8 @@ def sidebar [sections: list] {
       (H1 "understand stellar")
       (P "A visual map of every design variable. Click any token to copy it.")
     )
-    (NAV
+    (BUTTON {class: "nav-toggle" data-act: "toggle-nav"} "Sections")
+    (NAV {class: "section-nav"}
       (UL ( $sections | each {|s| LI (A {href: $"#($s.0)"} $s.1) } ))
     )
     (BUTTON {class: "theme-toggle" data-act: "toggle-theme"}
@@ -573,6 +574,18 @@ document.addEventListener('click', function(e){
     localStorage.setItem('theme', d ? 'dark' : 'light');
     setLabel();
     return;
+  }
+  var n = e.target.closest('[data-act=\"toggle-nav\"]');
+  if (n){
+    var sb = n.closest('.sidebar');
+    if (sb) sb.classList.toggle('nav-open');
+    return;
+  }
+  var link = e.target.closest('.section-nav a');
+  if (link){
+    var sb2 = link.closest('.sidebar');
+    if (sb2) sb2.classList.remove('nav-open');
+    // fall through: let the anchor jump happen
   }
   var c = e.target.closest('[data-copy]');
   if (c){

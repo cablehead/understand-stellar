@@ -564,6 +564,30 @@ a {
   opacity: 1;
 }
 
+/* section nav collapses behind a toggle on narrow screens; on desktop the
+   toggle is hidden and the list always shows. */
+.nav-toggle {
+  display: none;
+  font: inherit;
+  font-size: var(--font-size--1);
+  font-weight: var(--font-weight-semi-bold);
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: var(--border-width-1) solid var(--neutral-4);
+  border-radius: 0;
+  color: var(--neutral-1-dim);
+  cursor: pointer;
+  padding: var(--size--1) 0;
+}
+.nav-toggle::after {
+  content: " \25be";
+}
+.sidebar.nav-open .nav-toggle::after {
+  content: " \25b4";
+}
+
 @media (max-width: 60rem) {
   .shell {
     grid-template-columns: 1fr;
@@ -571,6 +595,15 @@ a {
   .sidebar {
     position: static;
     height: auto;
+  }
+  .nav-toggle {
+    display: block;
+  }
+  .section-nav {
+    display: none;
+  }
+  .sidebar.nav-open .section-nav {
+    display: block;
   }
 }
 
