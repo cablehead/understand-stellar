@@ -9,6 +9,20 @@ check both light and dark.
 Built with [http-nu](https://http-nu.cross.stream): the page is a single
 Nushell handler using the embedded HTML DSL and router.
 
+## Stellar is made by Star Federation, go buy it
+
+Stellar CSS is built by [Star Federation](https://github.com/starfederation),
+the team behind [Datastar](https://data-star.dev). It ships as part of **Datastar
+Pro**, a one-time, lifetime license that also funds all the open-source Datastar
+work.
+
+This little reference only exists because Stellar is worth understanding, and
+worth paying for: a complete, configurable design system as plain CSS custom
+properties, no build step, generated locally from one config. If you build for
+the web, **buy it**: [**data-star.dev/pro**](https://data-star.dev/pro). One
+purchase, every Pro plugin plus Stellar, forever, and you keep the open-source
+project alive. Huge thanks to the Star Federation crew for making it.
+
 ## What it covers
 
 Each family is shown with a visual metaphor, not a list:
@@ -27,8 +41,10 @@ Each family is shown with a visual metaphor, not a list:
   the organic blob and hand-drawn shapes.
 - **Elevation** - shadows cast on surfaces; negative steps press inward as
   wells, positive steps lift off the page.
-- **Motion** - live easing dots that loop across a track, duration bars that
-  fill in real time, and transform presets applied on hover.
+- **Motion** - easing dots, duration bars, and transform tiles you play on
+  demand, plus a **Compose** panel that builds a real transition (property +
+  amount + duration + easing) from the tokens, previews it, and hands you the
+  CSS to copy. This is how the tokens are actually used together.
 - **Layout** - z-index cards overlapping in real order, aspect ratios framed at
   their named proportions, and the viewport bounds that drive the fluid scales.
 
