@@ -191,7 +191,7 @@ def type-section [cfg: record] {
       let fams = ($cfg.fonts.families.values | get name)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Families")
-        (P {class: "note"} "Same sentence, every family. " (token "--font-{name}") ".")
+        (P {class: "note"} "Each is a ready-made font stack with system fallbacks - a different typographic voice. Reach for --font-sans on UI and body text, --font-mono for code and figures, --font-serif for long-form; the rest are character choices. The same sentence is set in each so you can compare. " (token "--font-{name}") ".")
         (DIV {class: "families"} ( $fams | each {|f|
           (DIV {class: "family-row"}
             (SPAN (token $"--font-($f)"))
@@ -355,7 +355,7 @@ def layout-section [cfg: record] {
       let levels = ($cfg.general.zindexes.levels)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Stacking order")
-        (P {class: "note"} "Cards overlap in z-index order. " (token "--zindex-{name}") ".")
+        (P {class: "note"} "Named layers so overlapping UI stacks predictably - a dropdown above content, a tooltip above that, a dialog and its toast on top - instead of hand-picked z-index numbers that drift out of order. The cards below overlap in their real order. " (token "--zindex-{name}") ".")
         (DIV {class: "zindex-demo"} ( $levels | enumerate | each {|it|
           let i = $it.index
           let lvl = $it.item
@@ -373,6 +373,7 @@ def layout-section [cfg: record] {
       let named = ($cfg.general.aspectRatio.named)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Aspect ratio")
+        (P {class: "note"} "Lock a box to a proportion so media and embeds hold their shape at any width - 16:9 for video, 1:1 for avatars, and so on. " (token "--aspect-ratio-{name}") ".")
         (DIV {class: "aspect-grid"} ( $named | each {|a|
           (DIV {class: "aspect-box" data-copy: $"--aspect-ratio-($a.name)"
                 style: {"aspect-ratio": $"var\(--aspect-ratio-($a.name)\)"}}
@@ -382,9 +383,15 @@ def layout-section [cfg: record] {
     })
 
     (if (not ($cfg.general.viewport.disabled)) {
+      let vmin = ($cfg.general.viewport.min)
+      let vmax = ($cfg.general.viewport.max)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Viewport bounds")
-        (P {class: "note"} "Fluid clamp() scales interpolate between these widths.")
+        (P {class: "note"} $"Every fluid token - the type scale, the spacing scale, the rest - interpolates with clamp\(\) across this window. At ($vmin)px and narrower it sits at its smallest; at ($vmax)px and wider, its largest; it scales linearly between. You rarely set these directly - they are the anchors the whole responsive system is tuned to. Reach for them when you want a media query or your own fluid value to line up with the scales. --viewport-base-font-size is the rem basis underneath it all.")
+        (DIV {class: "viewport-range"}
+          (SPAN {class: "vp-edge"} $"($vmin)px")
+          (DIV {class: "vp-bar"} "fluid scaling")
+          (SPAN {class: "vp-edge"} $"($vmax)px"))
         (DIV {class: "token-row"} (token "--viewport-min") (token "--viewport-max") (token "--viewport-base-font-size"))
       )
     })
