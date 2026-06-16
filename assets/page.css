@@ -244,6 +244,21 @@ a {
   aspect-ratio: 8 / 1;
 }
 
+/* compact ramp shared by brands and chart palettes */
+.ramp.mini .stop {
+  aspect-ratio: auto;
+  min-height: var(--size-3);
+  font-size: var(--font-size--3);
+  padding: var(--size--3);
+}
+.ramp.mini.dim .stop {
+  aspect-ratio: auto;
+  min-height: var(--size-0);
+}
+.ramp.mini .stop .on {
+  font-size: var(--font-size--3);
+}
+
 /* role surface demo */
 .surfaces {
   display: grid;
@@ -278,61 +293,32 @@ a {
 /* named brands */
 .brands {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
   gap: var(--size-1);
 }
 .brand-card {
   display: flex;
-  align-items: center;
-  gap: var(--size-0);
-}
-.brand-chips {
-  display: flex;
-  flex: 1;
-  border-radius: var(--border-radius-1);
-  overflow: hidden;
-  box-shadow: var(--shadow-0);
-}
-.brand-chips span {
-  flex: 1;
-  height: var(--size-3);
-  cursor: pointer;
+  flex-direction: column;
 }
 .brand-card .name {
   font-family: var(--font-mono);
   font-size: var(--font-size--2);
   color: var(--neutral-1-dim);
-  width: 5.5rem;
+  margin-bottom: var(--size--3);
 }
 
-/* charts + gradients */
-.chart-ramp {
+/* raw numeric amount stops: a simple wrap of token chips */
+.raw-amounts {
   display: flex;
-  border-radius: var(--border-radius-1);
-  overflow: hidden;
-  box-shadow: var(--shadow-0);
-  margin: var(--size-0) 0;
-}
-.chart-ramp span {
-  flex: 1;
-  height: var(--size-3);
-  cursor: pointer;
-}
-.qual {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+  flex-wrap: wrap;
   gap: var(--size--1);
 }
-.qual .swatch {
-  aspect-ratio: 1;
-  border-radius: var(--border-radius-2);
+
+/* diverging chart palettes stack with breathing room */
+.chart-ramps {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: var(--font-size--2);
-  box-shadow: var(--shadow-1);
-  cursor: pointer;
+  flex-direction: column;
+  gap: var(--size-1);
 }
 .gradients {
   display: grid;

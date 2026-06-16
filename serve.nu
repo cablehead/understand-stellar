@@ -83,6 +83,30 @@ def color-ramp [name: string] {
   )
 }
 
+# A compact base+dim ramp for any family that emits -on/-dim per step
+# (brands, chart qualitative, chart diverging). `prefix` is the token stem,
+# `steps` the suffix list, `labels` what each base stop prints. Clicking a base
+# stop copies the base token, its inner "on" copies -on, the dim row copies -dim.
+def mini-ramp [prefix: string, steps: list, labels: list] {
+  let cols = ($steps | length)
+  let gtc = $"repeat\(($cols), minmax\(0, 1fr\)\)"
+  [
+    (DIV {class: "ramp mini" style: {"grid-template-columns": $gtc}} ( 0..($cols - 1) | each {|i|
+      let n = ($steps | get $i)
+      (DIV {class: "stop" data-copy: $"($prefix)-($n)"
+            style: {background: $"var\(($prefix)-($n)\)" color: $"var\(($prefix)-($n)-on\)"}}
+        (SPAN {class: "n"} ($labels | get $i))
+        (SPAN {class: "on" data-copy: $"($prefix)-($n)-on"} "on"))
+    }))
+    (DIV {class: "ramp mini dim" style: {"grid-template-columns": $gtc}} ( 0..($cols - 1) | each {|i|
+      let n = ($steps | get $i)
+      (DIV {class: "stop" data-copy: $"($prefix)-($n)-dim"
+            style: {background: $"var\(($prefix)-($n)\)"}}
+        (SPAN {style: {color: $"var\(($prefix)-($n)-dim\)" "font-weight": "var(--font-weight-bold)"}} "dim"))
+    }))
+  ]
+}
+
 def color-section [cfg: record] {
   let roles = [primary secondary tertiary neutral neutral-variant error]
   (SECTION {class: "section"}
@@ -112,11 +136,10 @@ def color-section [cfg: record] {
         (H3 {class: "subhead"} "Named brand colors")
         (P {class: "note"} (token "--named-{brand}-{n}") $" : each brand seeded into a ($neg)+1+($pos) step ramp, plus -on and -dim.")
         (DIV {class: "brands"} ( $names | each {|b|
+          let st = (steps $neg $pos)
           (DIV {class: "brand-card"}
             (SPAN {class: "name"} $b)
-            (DIV {class: "brand-chips"} ( (steps $neg $pos) | each {|n|
-              SPAN {data-copy: $"--named-($b)-($n)" style: {background: $"var\(--named-($b)-($n)\)"} title: $"--named-($b)-($n)"}
-            }))
+            (mini-ramp $"--named-($b)" $st $st)
           )
         }))
       )
@@ -128,17 +151,12 @@ def color-section [cfg: record] {
       let tones = ($cfg.colors.charts.toneSteps)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Data visualization")
-        (P {class: "note"} (token "--chart-qualitative-{n}") " : categorical colors chosen to be distinct.")
-        (DIV {class: "qual"} ( 1..$qual | each {|n|
-          (DIV {class: "swatch" data-copy: $"--chart-qualitative-($n)"
-                style: {background: $"var\(--chart-qualitative-($n)\)" color: $"var\(--chart-qualitative-($n)-on\)"} title: $"--chart-qualitative-($n)"}
-            $"($n)")
-        }))
+        (P {class: "note"} (token "--chart-qualitative-{n}") " : categorical colors chosen to be distinct, each with -on and -dim.")
+        (mini-ramp "--chart-qualitative" (1..$qual | each {|n| $"($n)"}) (1..$qual | each {|n| $"($n)"}))
         (P {class: "note" style: {"margin-top": "var(--size-1)"}} (token $"--chart-diverging-{1..($div)}-step-{1..($tones)}") " : sequential ramps for ordered data.")
-        (DIV ( 1..$div | each {|p|
-          (DIV {class: "chart-ramp"} ( 1..$tones | each {|n|
-            SPAN {data-copy: $"--chart-diverging-($p)-step-($n)" style: {background: $"var\(--chart-diverging-($p)-step-($n)\)"} title: $"--chart-diverging-($p)-step-($n)"}
-          }))
+        (DIV {class: "chart-ramps"} ( 1..$div | each {|p|
+          let labs = (1..$tones | each {|n| $"($n)"})
+          (mini-ramp $"--chart-diverging-($p)-step" $labs $labs)
         }))
       )
     })
@@ -268,13 +286,16 @@ def borders-section [cfg: record] {
     (if (not ($cfg.borders.radii.disabled)) {
       let neg = ($cfg.borders.radii.negativeSteps)
       let pos = ($cfg.borders.radii.positiveSteps)
+      let r_ints = ((steps $neg $pos) | each {|n| $n | into int} | where {|n| $n >= 1})
+      let r_top = ($r_ints | math max)
+      let r_blends = ($r_ints | where {|n| $n < $r_top} | each {|n| $"--border-radius-($n)-($n + 1)"})
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Corner radius")
         (DIV {class: "box-grid"} ( (steps $neg $pos) | each {|n|
           (DIV {class: "demo-box" data-copy: $"--border-radius-($n)" style: {"border-radius": $"var\(--border-radius-($n)\)"}}
             $"--border-radius-($n)")
         }))
-        (P {class: "note"} "Half steps interpolate between neighbors: " (token "--border-radius-1-2") " (1->2), " (token "--border-radius-2-3") ", and so on.")
+        (P {class: "note"} "Half steps interpolate between neighbors (n -> n+1): " ( $r_blends | each {|b| [(token $b) " "] } ))
       )
     })
 
@@ -343,6 +364,17 @@ def motion-section [cfg: record] {
     (section-head "motion" "Motion"
       "Motion is three tokens working together. An easing (--anim-ease-*) shapes how a change accelerates and settles - standard for most UI, entrance or emphasized to pull the eye, a bounce or elastic for character. A duration (--anim-duration-*) sets how long it takes - fast for hover and toggle feedback, base for most transitions, slow for larger or more deliberate moves. A transform amount (--anim-scale-*, -rotate-*, -distance-*, -opacity-*) says how far it goes - how much to grow, turn, slide, or fade. You spend them together in one rule - transition: <property> <duration> <easing> - with the amount as the value it animates to. Build one below, play it, and copy the exact CSS.")
     (compose-block $cfg)
+
+    (DIV {class: "block"}
+      (H3 {class: "subhead"} "Raw amount stops")
+      (P {class: "note"} "The compose chips above use the named amounts (up, xl, muted). Each maps onto a numeric stop on the underlying scale - copy these when you want the raw step.")
+      (DIV {class: "raw-amounts"} (
+        # numeric amount stops, read from the generated CSS so the set stays complete
+        open --raw ($env.PWD | path join "assets/stellar.css") | decode utf-8
+        | parse -r '(--anim-(?:scale|rotate|distance|opacity)--?\d+):'
+        | get capture0 | uniq | sort | each {|t| token $t }
+      ))
+    )
   )
 }
 
