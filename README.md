@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  A visual reference for the <a href="https://github.com/starfederation/stellar">Stellar</a> CSS framework:
+  A visual reference for the <a href="https://data-star.dev/pro#stellar-css">Stellar</a> CSS framework:
   every design token, shown visually rather than just named.
   <br /><br />
   <a href="https://cablehead.github.io/understand-stellar/">Live site</a>
