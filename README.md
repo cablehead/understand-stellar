@@ -90,14 +90,3 @@ rm -rf css stellar.key
 how many steps each scale has and the named values (font families, weights,
 easings, brand colors, and so on), so editing the config and regenerating keeps
 the page in sync. Sections whose config block is `disabled` are skipped.
-
-## Files
-
-- `serve.nu`: the page handler and all section builders.
-- `lib.nu`: helpers (config loader, step ranges, the copyable token chip).
-- `assets/stellar.css`: vendored generated tokens.
-- `assets/page.css`: layout and demonstration styling, built on Stellar tokens.
-- `stellar.config.json`: vendored config the page reads at startup.
-- `assets/og.png`: the social card, regenerate with `node tools/og.cjs`.
-- `tools/`: build, audit, and capture scripts; see `tools/README.md`.
-- `screenshots/`: preview captures in both themes.
