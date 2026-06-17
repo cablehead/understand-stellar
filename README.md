@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://cablehead.github.io/understand-stellar/">
-    <img alt="understand stellar - every Stellar CSS design token, shown visually" src="./assets/og.png" width="640" />
+    <img alt="understand stellar: every Stellar CSS design token, shown visually" src="./assets/og.png" width="640" />
   </a>
 </p>
 
@@ -27,43 +27,42 @@ and dark.
 Built with [http-nu](https://http-nu.cross.stream): the page is a single Nushell
 handler using the embedded HTML DSL and router.
 
-## Stellar is made by Star Federation, go buy it
+## Stellar is made by Star Federation
 
 Stellar CSS is built by [Star Federation](https://github.com/starfederation),
 the team behind [Datastar](https://data-star.dev). It ships as part of
-**Datastar Pro**, a one-time, lifetime license that also funds all the
-open-source Datastar work.
+**Datastar Pro**, a one-time, lifetime license that also funds the open-source
+Datastar work.
 
-This little reference only exists because Stellar is worth understanding, and
-worth paying for: a complete, configurable design system as plain CSS custom
-properties, no build step, generated locally from one config. If you build for
-the web, **buy it**: [**data-star.dev/pro**](https://data-star.dev/pro). One
-purchase, every Pro plugin plus Stellar, forever, and you keep the open-source
-project alive. Huge thanks to the Star Federation crew for making it.
+This reference exists because Stellar is worth understanding: a complete,
+configurable design system as plain CSS custom properties, no build step,
+generated locally from one config. If you build for the web, it is worth buying:
+[data-star.dev/pro](https://data-star.dev/pro). One purchase covers every Pro
+plugin plus Stellar for the life of the license, and it funds the open-source
+project. Thanks to the Star Federation team for building it.
 
 ## What it covers
 
 Each family is shown with a visual metaphor, not a list:
 
-- **Color** - six semantic roles as 12-step ramps. The step number on every
+- **Color**: six semantic roles as 12-step ramps. The step number on every
   swatch is painted in that step's `-on` color, so foreground legibility is
   visible in place; a band below samples each `-dim` variant. Plus named brand
   ramps, chart palettes (qualitative + diverging), gradients, and a live syntax
   palette rendered through the highlighter.
-- **Type** - the fluid size scale set as real specimens, every font family shown
+- **Type**: the fluid size scale set as real specimens, every font family shown
   with the same sentence, weights as a ramp, and line-height / letter-spacing
   demonstrated on real paragraphs.
-- **Space** - the size scale as bars whose width is the token value, so the
+- **Space**: the size scale as bars whose width is the token value, so the
   geometric rhythm is visible.
-- **Borders & radius** - boxes with the radius and width applied directly, plus
+- **Borders & radius**: boxes with the radius and width applied directly, plus
   the organic blob and hand-drawn shapes.
-- **Elevation** - shadows cast on surfaces; negative steps press inward as
-  wells, positive steps lift off the page.
-- **Motion** - easing dots, duration bars, and transform tiles you play on
-  demand, plus a **Compose** panel that builds a real transition (property +
-  amount + duration + easing) from the tokens, previews it, and hands you the
-  CSS to copy. This is how the tokens are actually used together.
-- **Layout** - z-index cards overlapping in real order, aspect ratios framed at
+- **Elevation**: shadows cast on surfaces; negative steps press inward as wells,
+  positive steps lift off the page.
+- **Motion**: a **Compose** panel that builds a real transition (property +
+  amount + duration + easing) from the tokens, plays it, and hands you the CSS
+  to copy, plus the raw amount stops. This is how the tokens are used together.
+- **Layout**: z-index cards overlapping in real order, aspect ratios framed at
   their named proportions, and the viewport bounds that drive the fluid scales.
 
 ## Run
@@ -94,11 +93,11 @@ the page in sync. Sections whose config block is `disabled` are skipped.
 
 ## Files
 
-- `serve.nu` - the page handler and all section builders.
-- `lib.nu` - helpers (config loader, step ranges, the copyable token chip).
-- `assets/stellar.css` - vendored generated tokens.
-- `assets/page.css` - layout and demonstration styling, built on Stellar tokens.
-- `stellar.config.json` - vendored config the page reads at startup.
-- `assets/og.png` - the social card, regenerate with `node tools/og.cjs`.
-- `tools/` - build, audit, and capture scripts; see `tools/README.md`.
-- `screenshots/` - preview captures in both themes.
+- `serve.nu`: the page handler and all section builders.
+- `lib.nu`: helpers (config loader, step ranges, the copyable token chip).
+- `assets/stellar.css`: vendored generated tokens.
+- `assets/page.css`: layout and demonstration styling, built on Stellar tokens.
+- `stellar.config.json`: vendored config the page reads at startup.
+- `assets/og.png`: the social card, regenerate with `node tools/og.cjs`.
+- `tools/`: build, audit, and capture scripts; see `tools/README.md`.
+- `screenshots/`: preview captures in both themes.
