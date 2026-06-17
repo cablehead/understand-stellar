@@ -234,7 +234,10 @@ a {
 
 .ramp {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  /* minmax(0, 1fr), not bare 1fr: a 1fr track's min is min-content, and the
+     dim row's wide aspect-ratio stops would otherwise force each cell to
+     ~height*8 wide, overflowing the clipped row so only the first few show. */
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   border-radius: var(--border-radius-2);
   overflow: hidden;
   box-shadow: var(--shadow-1);
@@ -261,7 +264,11 @@ a {
   opacity: 0.85;
 }
 .ramp.dim .stop {
-  aspect-ratio: 8 / 1;
+  /* a short band sized by height, not a wide aspect-ratio: an 8/1 ratio makes
+     each cell's min-content width ~height*8, which overflows the 12-col grid. */
+  aspect-ratio: auto;
+  min-width: 0;
+  min-height: var(--size-1);
 }
 
 /* compact ramp shared by brands and chart palettes: same corner layout as the
