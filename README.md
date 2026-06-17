@@ -24,8 +24,9 @@ by the decision it serves and demonstrated visually rather than just named.
 Click any token to copy its variable name; toggle the theme to check both light
 and dark.
 
-Built with [http-nu](https://http-nu.cross.stream): the page is a single Nushell
-handler using the embedded HTML DSL and router.
+Built with [http-nu](https://http-nu.cross.stream): one Nushell handler builds
+the page with http-nu's HTML DSL. `build.nu` renders it once to a static
+`index.html` for GitHub Pages; you can also run it live (see Run).
 
 ## Stellar is made by Star Federation
 
@@ -43,13 +44,12 @@ project. Thanks to the Star Federation team for building it.
 
 ## What it covers
 
-Each family is shown with a visual metaphor, not a list:
+Each one is shown visually, not just named:
 
-- **Color**: six semantic roles as 12-step ramps. The step number on every
-  swatch is painted in that step's `-on` color, so foreground legibility is
-  visible in place; a band below samples each `-dim` variant. Plus named brand
-  ramps, chart palettes (qualitative + diverging), gradients, and a live syntax
-  palette rendered through the highlighter.
+- **Color**: six color sets, each running 12 shades from light to dark. Every
+  shade comes with a readable `-on` text color and a softer `-dim` for quieter
+  text. Plus brand palettes, chart colors, gradients, and a live code-syntax
+  palette.
 - **Type**: the fluid size scale set as real specimens, every font family shown
   with the same sentence, weights as a ramp, and line-height / letter-spacing
   demonstrated on real paragraphs.

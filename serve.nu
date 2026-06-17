@@ -128,13 +128,13 @@ def color-section [cfg: record] {
   let roles = [primary secondary tertiary neutral neutral-variant error]
   (SECTION {class: "section"}
     (section-head "color" "Color"
-      "Six semantic roles, each a 12-step ramp built in OKLCH so the steps read as evenly spaced. The ramp inverts between light and dark, so a step keeps its role in both: low steps are subtle surfaces, high steps strong fills. Primary for actions, neutral for surfaces and body text, error for destructive states. Build a component from one role: a surface step, its -on for high-contrast text, and -dim, the muted companion for secondary or disabled text. Each number is painted in its step's -on, so legibility shows in place.")
+      "Six color sets, each with a job: primary for buttons and links, neutral for backgrounds and body text, error for danger, plus three more. Each runs 12 shades from light to dark and flips in dark mode, so you pick by job and it adapts. For any shade, -on is text that stays readable on it, and -dim is quieter text like captions. Each swatch shows its number in its own -on, so you can see where text holds up.")
 
     (DIV {class: "block"} ( $roles | each {|r| color-ramp $r } ))
 
     (DIV {class: "block"}
-      (H3 {class: "subhead"} "Roles in practice")
-      (P {class: "note"} "Each card uses one role only: a surface step, its -on, and -dim.")
+      (H3 {class: "subhead"} "One set in practice")
+      (P {class: "note"} "Each card is built from a single color set: a background shade, its -on for text, and -dim for quieter text.")
       (DIV {class: "surfaces"} ( $roles | each {|r|
         (DIV {class: "surface" style: {background: $"var\(--($r)-2\)" color: $"var\(--($r)-2-on\)"}}
           (H4 $r)
@@ -151,7 +151,7 @@ def color-section [cfg: record] {
       let names = ($cfg.colors.named.colors | get name)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Named brand colors")
-        (P {class: "note"} (token "--named-{brand}-{n}") $" : each brand color seeded, then expanded into a ($neg)+1+($pos) step ramp with -on and -dim per step.")
+        (P {class: "note"} (token "--named-{brand}-{n}") $" : each brand color expanded into a ($neg)+1+($pos) shade ramp, every shade with -on and -dim.")
         (DIV {class: "brands"} ( $names | each {|b|
           let st = (steps $neg $pos)
           (DIV {class: "brand-card"}
@@ -168,9 +168,9 @@ def color-section [cfg: record] {
       let tones = ($cfg.colors.charts.toneSteps)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Data visualization")
-        (P {class: "note"} (token "--chart-qualitative-{n}") " : categorical hues spaced to be maximally distinguishable, each with -on and -dim.")
+        (P {class: "note"} (token "--chart-qualitative-{n}") " : distinct colors for categories, picked to be easy to tell apart, each with -on and -dim.")
         (mini-ramp "--chart-qualitative" (1..$qual | each {|n| $"($n)"}) (1..$qual | each {|n| $"($n)"}))
-        (P {class: "note" style: {"margin-top": "var(--size-1)"}} (token $"--chart-diverging-{1..($div)}-step-{1..($tones)}") " : ordered tone ramps for sequential or diverging data, each step with -on and -dim.")
+        (P {class: "note" style: {"margin-top": "var(--size-1)"}} (token $"--chart-diverging-{1..($div)}-step-{1..($tones)}") " : ordered shade ramps for ranked data, each step with -on and -dim.")
         (DIV {class: "chart-ramps"} ( 1..$div | each {|p|
           let labs = (1..$tones | each {|n| $"($n)"})
           (mini-ramp $"--chart-diverging-($p)-step" $labs $labs)
@@ -196,7 +196,7 @@ def color-section [cfg: record] {
       let code_tokens = (open --raw ($env.PWD | path join "assets/stellar.css") | decode utf-8 | parse -r '(--code-[a-z0-9-]+):' | get capture0 | uniq | sort)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Code & syntax")
-        (P {class: "note"} "A fixed syntax vocabulary (keyword, string, name.function, and so on) derived from the color theme and inverted for dark mode. This is exactly what the highlighter emits.")
+        (P {class: "note"} "The full set of syntax colors (keyword, string, function name, and so on), taken from the theme and flipped for dark mode. This is exactly what the code highlighter uses.")
         (DIV {class: "code-demo"}
           (PRE (CODE ($sample | .highlight rust))))
         (DIV {class: "token-row"} ( $code_tokens | each {|t| token $t } ))
@@ -212,11 +212,11 @@ def type-section [cfg: record] {
   let sz_pos = ($cfg.fonts.sizes.positiveSteps)
   (SECTION {class: "section"}
     (section-head "type" "Type"
-      "A modular scale on a 1.2 (minor third) ratio, plus families, weights, line-height and letter-spacing. Step 0 is a fixed 1rem; every other step is a clamp() that grows with the viewport between the layout bounds, negative steps for fine print, positive for headings. Each specimen is set at the real token, so what you see is what renders.")
+      "Text sizes on a numbered scale, plus font families, weights, line height, and letter spacing. Step 0 is your 1rem body size; smaller steps shrink toward fine print, larger steps grow toward headings. Each size scales smoothly with the screen, so text stays in proportion from phone to desktop. Every sample here is set at its real size.")
 
     (DIV {class: "block"}
       (H3 {class: "subhead"} "Size scale")
-      (P {class: "note"} (token "--font-size-0") " is the fixed 1rem anchor; other steps are fluid, roughly 1.2x their neighbor at full width.")
+      (P {class: "note"} (token "--font-size-0") " is the 1rem starting point; each step up is about 1.2x the one below it, each step down a little smaller.")
       (DIV {class: "type-scale"} ( (steps $sz_neg $sz_pos) | reverse | each {|n|
         (DIV {class: "type-row" data-copy: $"--font-size-($n)"}
           (DIV {class: "specimen" style: {"font-size": $"var\(--font-size-($n)\)"}} "Grumpy wizards make toxic brew")
@@ -254,7 +254,7 @@ def type-section [cfg: record] {
       let lh_pos = ($cfg.fonts.lineHeights.positiveSteps)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Line height")
-        (P {class: "note"} "Absolute rem leadings, not unitless ratios, each tuned to pair with its size step; tighter low, airier high. Mismatch a large display size and wrapped lines can overlap. " (token "--font-line-height-{n}") ".")
+        (P {class: "note"} "A fixed line height for each text size, tighter for small text, airier for large. Borrow one for a much bigger heading and the lines can overlap. " (token "--font-line-height-{n}") ".")
         (DIV {class: "leading-demo"} ( (steps $lh_neg $lh_pos) | each {|n|
           (DIV {class: "box" data-copy: $"--font-line-height-($n)"}
             (P {style: {"line-height": $"var\(--font-line-height-($n)\)"}} "Type that wraps across several lines shows its leading. The taller the line height, the more open the paragraph feels.")
@@ -268,7 +268,7 @@ def type-section [cfg: record] {
       let ls_pos = ($cfg.fonts.spacing.positiveSteps)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Letter spacing")
-        (P {class: "note"} "Fluid and signed: negative steps tighten large display text, zero at step 0, positive steps open up small text; tracking tightens further as the viewport widens. " (token "--font-letter-spacing-{n}") ".")
+        (P {class: "note"} "Negative steps tighten spacing for large headings, positive steps open it up for small text, zero in between. It also tightens a little as the screen widens. " (token "--font-letter-spacing-{n}") ".")
         (DIV {class: "tracking-demo"} ( (steps $ls_neg $ls_pos) | reverse | each {|n|
           (P {data-copy: $"--font-letter-spacing-($n)" style: {"letter-spacing": $"var\(--font-letter-spacing-($n)\)" "font-size": "var(--font-size-2)"}}
             "TRACKING " (SPAN {class: "token"} $"--font-letter-spacing-($n)"))
@@ -285,7 +285,7 @@ def space-section [cfg: record] {
   let pos = ($cfg.general.size.positiveSteps)
   (SECTION {class: "section"}
     (section-head "space" "Space & size"
-      "One scale for padding, margin, gaps and sizing, sharing the type scale's fluid engine: each step is a clamp() that grows with the viewport, and each is a fixed 1.2 ratio above the last. Reuse one step for related gaps to hold the rhythm. Each bar's width is the token value.")
+      "One numbered scale for padding, margins, gaps, and sizes. Reuse the same step for related spacing and the layout keeps a steady rhythm. Like text, each step scales smoothly with the screen. Each bar's width is the value itself.")
     (DIV {class: "space-stack"} ( (steps $neg $pos) | each {|n|
       (DIV {class: "space-bar" data-copy: $"--size-($n)"}
         (SPAN {class: "lbl"} $"--size-($n)")
@@ -299,7 +299,7 @@ def space-section [cfg: record] {
 def borders-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "borders" "Borders & radius"
-      "Corner radii and border widths, both fluid clamp() steps that scale with the viewport like type and space. Small radius for inputs and cards, larger for pills and avatars; match width to emphasis. The blob and hand-drawn radii are pre-generated multi-corner shapes for surfaces that should feel less rigid. Each box applies the token directly.")
+      "Corner roundness and border thickness, each on its own numbered scale. A small radius for inputs and cards, a large one for pills and avatars; thicker borders for more emphasis. The blob and hand-drawn shapes are ready-made irregular corners for surfaces that should feel less rigid. Each box here uses the value directly.")
 
     (if (not ($cfg.borders.radii.disabled)) {
       let neg = ($cfg.borders.radii.negativeSteps)
@@ -322,7 +322,7 @@ def borders-section [cfg: record] {
       let pos = ($cfg.borders.widths.positiveSteps)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Border width")
-        (P {class: "note"} "Fluid steps that scale with the viewport; thicker for stronger emphasis. " (token "--border-width-{n}") ".")
+        (P {class: "note"} "Numbered steps that scale with the screen; thicker for more emphasis. " (token "--border-width-{n}") ".")
         (DIV {class: "box-grid"} ( (steps $neg $pos) | each {|n|
           (DIV {class: "border-box" data-copy: $"--border-width-($n)" style: {"border-width": $"var\(--border-width-($n)\)"}}
             $"--border-width-($n)")
@@ -363,7 +363,7 @@ def borders-section [cfg: record] {
 def elevation-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "elevation" "Elevation"
-      "A shadow scale for depth. Each positive step stacks several tinted layers to fake umbra and penumbra, not one flat drop, and lifts an element further off the page: card low, dropdown higher, dialog highest. Negative steps invert to inset wells with a hairline highlight, handy for inputs. Step 0 is none.")
+      "Shadows that show how far something sits off the page, each built from a few soft layers so it reads as real, not a flat drop. The higher the step, the more it lifts: a card sits low, a dropdown higher, a dialog highest. Negative steps press inward instead, for input fields. Step 0 is no shadow.")
     (if (not ($cfg.colors.shadows.disabled)) {
       let outer = ($cfg.colors.shadows.outer.steps)
       let inner = ($cfg.colors.shadows.inner.steps)
@@ -381,12 +381,12 @@ def elevation-section [cfg: record] {
 def motion-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "motion" "Motion"
-      "Three tokens combine into one transition: an easing, a duration, and a transform amount. Easings are cubic-bezier curves (--anim-ease-standard, -emphasized, -entrance) plus linear() curves for bounce, pulse and shake. Durations (--anim-duration-*) are fluid, scaling with the viewport, and honor prefers-reduced-motion. The amount says how far it goes (--anim-scale-*, -rotate-*, -distance-*, -opacity-*). You spend them together in transition: <property> <duration> <easing>. Build one below, play it, and copy the exact CSS.")
+      "A transition is three choices: how it moves (the easing), how long it takes (the duration), and how far it goes (the amount: scale, rotate, slide, or fade). Easings run from a plain standard curve to springy ones like bounce and shake. Durations adjust to screen size, and switch off when the visitor prefers reduced motion. Build one below, play it, and copy the CSS it produces.")
     (compose-block $cfg)
 
     (DIV {class: "block"}
       (H3 {class: "subhead"} "Raw amount stops")
-      (P {class: "note"} "The chips above use named amounts (up, xl, muted); each is an alias for a numeric stop on the raw scale. Copy these for the underlying step.")
+      (P {class: "note"} "The chips above use friendly names (up, xl, muted). Each one is just a nickname for one of these numbered steps. Copy a number to use it directly.")
       (DIV {class: "raw-amounts"} (
         # numeric amount stops, read from the generated CSS so the set stays complete
         open --raw ($env.PWD | path join "assets/stellar.css") | decode utf-8
@@ -402,13 +402,13 @@ def motion-section [cfg: record] {
 def layout-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "layout" "Layout"
-      "Stacking order, aspect ratios, and the viewport bounds that drive every fluid token. Named z-index layers keep overlapping UI in order without hand-picked numbers. Aspect-ratio tokens frame media at common proportions. The viewport min and max are the anchors every clamp() interpolates between: type, space, radius, width, duration.")
+      "Stacking order, aspect ratios, and the screen-width limits behind every fluid size. Named z-index layers keep overlapping elements in order, a dropdown over the page, a dialog over that, without guessing numbers. Aspect-ratio tokens hold media at set proportions. The viewport min and max are the narrow and wide widths every fluid size scales between.")
 
     (if (not ($cfg.general.zindexes.disabled)) {
       let levels = ($cfg.general.zindexes.levels)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Stacking order")
-        (P {class: "note"} "Named layers with wide gaps so overlapping UI stacks predictably: dropdown over content, tooltip over that, dialog, drawer and toast on top. No magic numbers that drift out of order. The cards below overlap in real order. " (token "--zindex-{name}") ".")
+        (P {class: "note"} "Named layers so overlapping elements stack in a set order: dropdown over the page, tooltip over that, dialog, drawer, and toast on top. No hand-picked numbers that drift out of order. The cards below overlap in that order. " (token "--zindex-{name}") ".")
         (DIV {class: "zindex-demo"} ( $levels | enumerate | each {|it|
           let i = $it.index
           let lvl = $it.item
@@ -440,7 +440,7 @@ def layout-section [cfg: record] {
       let vmax = ($cfg.general.viewport.max)
       (DIV {class: "block"}
         (H3 {class: "subhead"} "Viewport bounds")
-        (P {class: "note"} $"Every fluid token interpolates with clamp\(\) across this window: smallest at ($vmin)px and below, largest at ($vmax)px and above, linear between. Type, space, radius, border width and duration all share these anchors. You rarely set them directly; reach for them to line a media query or your own fluid value up with the scales.")
+        (P {class: "note"} $"Every fluid size scales across this range: smallest at ($vmin)px and below, largest at ($vmax)px and above, smoothly in between. Text, spacing, radius, border width, and duration all scale between these two widths. You rarely set them directly; reach for them to line a media query up with the scales.")
         (DIV {class: "viewport-range"}
           (SPAN {class: "vp-edge"} $"($vmin)px")
           (DIV {class: "vp-bar"} "fluid scaling")
@@ -637,7 +637,7 @@ document.addEventListener('click', function(e){
             (MAIN {class: "content"}
               (DIV {class: "intro"}
                 (H1 "See what Stellar gives you")
-                (P {class: "lede"} "Stellar generates a complete set of design tokens from one config: color systems, a fluid type scale, a spacing rhythm, elevation, motion, and layout primitives. This page shows each one visually. Click any token to copy its variable name. Toggle the theme to check both modes.")
+                (P {class: "lede"} "Stellar turns one config file into a full set of CSS variables: colors, text sizes, spacing, shadows, motion, and layout. This page shows each one in action. Click any variable to copy it, and flip the theme to see light and dark.")
               )
               (color-section $cfg)
               (type-section $cfg)
