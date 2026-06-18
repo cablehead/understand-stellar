@@ -906,11 +906,15 @@ a {
   border-radius: var(--border-radius-3);
   overflow: hidden;
 }
+/* the sample is the demo: the role's text shown in its own color on the
+   surface. The meta below (usage + token chips) is the quiet caption. */
 .pair-sample {
   position: relative;
   padding: var(--size-4) var(--size-2) var(--size-3);
-  font-family: var(--font-mono);
-  font-size: var(--font-size--1);
+  font-size: var(--font-size-1);
+}
+.pair-label {
+  font-weight: var(--font-weight-semi-bold);
 }
 .pair-ratio {
   position: absolute;
@@ -933,9 +937,6 @@ a {
   flex-direction: column;
   gap: var(--size--2);
   border-top: var(--border-width-1) solid var(--neutral-3);
-}
-.pair-meta strong {
-  font-size: var(--font-size-0);
 }
 
 .sweep {

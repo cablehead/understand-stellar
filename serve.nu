@@ -675,11 +675,10 @@ def home-page [cfg: record, sections: list] {
 def pair-card [surface: string, fg: string, label: string, desc: string] {
   (DIV {class: "pair-card"}
     (DIV {class: "pair-sample" style: {background: $"var\(($surface)\)" color: $"var\(($fg)\)"}}
-      (SPAN {class: "pair-fg"} $fg)
+      (SPAN {class: "pair-label"} $label)
       (SPAN {class: "pair-ratio"} "")
     )
     (DIV {class: "pair-meta"}
-      (STRONG $label)
       (SPAN {class: "note"} $desc)
       (DIV {class: "token-row"} (token $surface) (token $fg))
     )
@@ -726,14 +725,14 @@ def notes-page [cfg: record, sections: list] {
         (MAIN {class: "content"}
           (DIV {class: "intro"}
             (H1 "Notes")
-            (P {class: "lede"} "Working notes from understanding Stellar: the decisions, the dead ends, and how to pair tokens so they actually read. This page grows as the journey does.")
+            (P {class: "lede"} "Decisions we made pairing Stellar's tokens on this site, and why.")
           )
           (SECTION {class: "section"}
-            (section-head "pairing" "Pairing tokens" "Every shade in a ramp is a surface, with its own -on for readable text and -dim for a quieter companion. -on and -dim only work on their own shade. For a color on a different surface, reach into the ramp and pick a shade by contrast, which comes from how many shades apart two colors sit, not from which set they belong to.")
+            (section-head "pairing" "Pairing tokens" "Each shade comes with an -on for text and a -dim for quieter text, both tuned to that exact shade. To put a color on a different surface, pick a shade by the contrast you want: contrast comes from how far apart two shades are, not from which color.")
 
             (DIV {class: "block"}
               (H3 {class: "subhead"} "Built on a neutral-1 surface")
-              (P {class: "note"} "What this whole site is built from. Each sample is the real token pair, and its WCAG contrast is measured live in your browser. Flip the theme and the numbers update.")
+              (P {class: "note"} "The three pairs this site runs on, over the neutral-1 background. Contrast is measured live, so flip the theme and it updates.")
               (DIV {class: "pairing-grid"}
                 (pair-card "--neutral-1" "--neutral-1-on" "Primary text" "headings, body")
                 (pair-card "--neutral-1" "--neutral-1-dim" "Secondary text" "ledes, notes, captions")
@@ -743,7 +742,7 @@ def notes-page [cfg: record, sections: list] {
 
             (DIV {class: "block"}
               (H3 {class: "subhead"} "Making -dim readable")
-              (P {class: "note"} "-dim is generated to an APCA contrast target. At the default Lc 30 it is decorative, far too faint for the prose this site is mostly made of. Raising the target makes it a legible secondary tier. One value cannot be both readable and muted in both modes, since APCA is polarity-aware, so the light side needs a higher target; 65 is the lowest that clears light while keeping dim softer than -on.")
+              (P {class: "note"} "We use -dim for every bit of secondary text here: ledes, notes, captions. It shipped too faint to read, 1.7:1 in light mode, below the 4.5:1 text needs. -dim is built to a contrast target (dimTargetLc), and the default 30 is meant for decoration, not reading. We raised it to 65: now 4.4:1 in light and 9.9:1 in dark, readable but still softer than -on. One target can't suit both modes, so we tuned for the harder one, light.")
               (DIV {class: "sweep"}
                 (TABLE
                   (THEAD (TR (TH "dimTargetLc") (TH "light") (TH "dark") (TH "")))
