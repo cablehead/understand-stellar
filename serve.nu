@@ -96,41 +96,48 @@ def color-ramp [name: string] {
       (token $"--($name)-12")
     )
     (DIV {class: "ramp"} ( 1..12 | each {|n|
-      (DIV {class: "stop" data-copy: $"--($name)-($n)"
+      (DIV {class: "swatch" data-copy: $"--($name)-($n)"
             style: {background: $"var\(--($name)-($n)\)" color: $"var\(--($name)-($n)-on\)"}}
-        (SPAN {class: "n"} $"($n)")
-        (SPAN {class: "on" data-copy: $"--($name)-($n)-on"} "on")
-      )
+        (B $"($n)"))
     }))
-    (DIV {class: "ramp dim"} ( 1..12 | each {|n|
-      (DIV {class: "stop" data-copy: $"--($name)-($n)-dim"
+    (DIV {class: "ramp band"} ( 1..12 | each {|n|
+      (DIV {class: "swatch" data-copy: $"--($name)-($n)-on"
             style: {background: $"var\(--($name)-($n)\)"}}
-        (SPAN {style: {color: $"var\(--($name)-($n)-dim\)" "font-weight": "var(--font-weight-bold)"}} "dim")
-      )
+        (B {style: {color: $"var\(--($name)-($n)-on\)"}} "on"))
+    }))
+    (DIV {class: "ramp band"} ( 1..12 | each {|n|
+      (DIV {class: "swatch" data-copy: $"--($name)-($n)-dim"
+            style: {background: $"var\(--($name)-($n)\)"}}
+        (B {style: {color: $"var\(--($name)-($n)-dim\)"}} "dim"))
     }))
   )
 }
 
-# A compact base+dim ramp for any family that emits -on/-dim per step
-# (brands, chart qualitative, chart diverging). `prefix` is the token stem,
-# `steps` the suffix list, `labels` what each base stop prints. Clicking a base
-# stop copies the base token, its inner "on" copies -on, the dim row copies -dim.
+# A compact ramp for any family that emits -on/-dim per step (brands, chart
+# qualitative, chart diverging). `prefix` is the token stem, `steps` the suffix
+# list, `labels` what each shade swatch prints. Three strips: the shade copies
+# the base token, the -on band copies -on, the -dim band copies -dim.
 def mini-ramp [prefix: string, steps: list, labels: list] {
   let cols = ($steps | length)
   let gtc = $"repeat\(($cols), minmax\(0, 1fr\)\)"
   [
     (DIV {class: "ramp mini" style: {"grid-template-columns": $gtc}} ( 0..($cols - 1) | each {|i|
       let n = ($steps | get $i)
-      (DIV {class: "stop" data-copy: $"($prefix)-($n)"
+      (DIV {class: "swatch" data-copy: $"($prefix)-($n)"
             style: {background: $"var\(($prefix)-($n)\)" color: $"var\(($prefix)-($n)-on\)"}}
-        (SPAN {class: "n"} $"($labels | get $i)")
-        (SPAN {class: "on" data-copy: $"($prefix)-($n)-on"} "on"))
+        (B $"($labels | get $i)"))
     }))
-    (DIV {class: "ramp mini dim" style: {"grid-template-columns": $gtc}} ( 0..($cols - 1) | each {|i|
+    (DIV {class: "ramp mini band" style: {"grid-template-columns": $gtc}} ( 0..($cols - 1) | each {|i|
       let n = ($steps | get $i)
-      (DIV {class: "stop" data-copy: $"($prefix)-($n)-dim"
+      (DIV {class: "swatch" data-copy: $"($prefix)-($n)-on"
             style: {background: $"var\(($prefix)-($n)\)"}}
-        (SPAN {style: {color: $"var\(($prefix)-($n)-dim\)" "font-weight": "var(--font-weight-bold)"}} "dim"))
+        (B {style: {color: $"var\(($prefix)-($n)-on\)"}} "on"))
+    }))
+    (DIV {class: "ramp mini band" style: {"grid-template-columns": $gtc}} ( 0..($cols - 1) | each {|i|
+      let n = ($steps | get $i)
+      (DIV {class: "swatch" data-copy: $"($prefix)-($n)-dim"
+            style: {background: $"var\(($prefix)-($n)\)"}}
+        (B {style: {color: $"var\(($prefix)-($n)-dim\)"}} "dim"))
     }))
   ]
 }

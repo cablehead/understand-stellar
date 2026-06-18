@@ -247,49 +247,48 @@ h3 {
   cursor: default;
 }
 
-.ramp {
-  display: grid;
-  /* minmax(0, 1fr), not bare 1fr: a 1fr track's min is min-content, and the
-     dim row's wide aspect-ratio stops would otherwise force each cell to
-     ~height*8 wide, overflowing the clipped row so only the first few show. */
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  border-radius: var(--border-radius-2);
-  overflow: hidden;
-  box-shadow: var(--shadow-1);
-}
-.ramp.dim {
-  margin-top: 2px;
-}
-.ramp .stop {
-  aspect-ratio: 4 / 5;
+/* a swatch: one cell that paints a shade and copies a token on click. The
+   block; ramps arrange swatches into strips. */
+.swatch {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: var(--size--2);
+  min-width: 0;
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: var(--font-size--2);
   line-height: 1;
 }
-.ramp .stop .n {
+.swatch b {
   font-weight: var(--font-weight-bold);
 }
-.ramp .stop .on {
-  align-self: flex-end;
-  opacity: 0.85;
+
+/* a strip of swatches, clipped into one rounded bar. minmax(0, 1fr) so no cell
+   forces its track past the 12 columns. */
+.ramp {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  border-radius: var(--border-radius-2);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
 }
-.ramp.dim .stop {
-  /* a short band sized by height, not a wide aspect-ratio: an 8/1 ratio makes
-     each cell's min-content width ~height*8, which overflows the 12-col grid. */
+/* the tall color row: the shade with its step number in the corner */
+.ramp .swatch {
+  aspect-ratio: 4 / 5;
+  align-items: flex-start;
+  padding: var(--size--2);
+}
+/* the short -on and -dim rows: each a separated bar with a centered label in
+   the foreground colour it copies */
+.ramp.band {
+  margin-top: 2px;
+}
+.ramp.band .swatch {
   aspect-ratio: auto;
-  min-width: 0;
+  align-items: center;
+  justify-content: center;
   min-height: var(--size-1);
 }
-
-/* compact ramp shared by brands and chart palettes: same corner layout as the
-   marquee ramp (number top-left, on bottom-right), just a smaller label. */
-.ramp.mini .stop,
-.ramp.mini .stop .on {
+/* compact strips for brands and chart palettes */
+.ramp.mini .swatch {
   font-size: var(--font-size--3);
 }
 
