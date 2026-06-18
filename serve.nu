@@ -742,7 +742,7 @@ def notes-page [cfg: record, sections: list] {
 
             (DIV {class: "block"}
               (H3 {class: "subhead"} "Making -dim readable")
-              (P {class: "note"} "-dim carries every bit of secondary text here: ledes, notes, captions. Its contrast target (dimTargetLc) defaults to 30, which is decorative, far too faint to read: 1.7:1 in light mode, below the 4.5:1 body text needs. This site sets it to 65, the lowest value that makes light mode readable: 4.4:1 in light, 9.9:1 in dark, still softer than -on.")
+              (P {class: "note"} "-dim is the secondary text here: ledes, notes, captions. Its contrast target (dimTargetLc) defaults to 30, decorative and too faint to read: 1.7:1 in light mode, below the 4.5:1 body text needs. This site sets it to 65, the lowest value that makes light mode readable: 4.4:1 in light, 9.9:1 in dark, still softer than -on.")
               (DIV {class: "sweep"}
                 (TABLE
                   (THEAD (TR (TH "dimTargetLc") (TH "light") (TH "dark") (TH "")))
