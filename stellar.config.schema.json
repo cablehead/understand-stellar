@@ -1,0 +1,1584 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stellar Config",
+  "schemaVersion": 1,
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "general": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "viewport": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "min": {
+              "type": "integer"
+            },
+            "max": {
+              "type": "integer"
+            },
+            "baseFont": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "mode": {
+                      "const": "browserDefault"
+                    }
+                  },
+                  "required": [
+                    "mode"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "mode": {
+                      "const": "multiplier"
+                    },
+                    "value": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    }
+                  },
+                  "required": [
+                    "mode",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "disabled",
+            "min",
+            "max",
+            "baseFont"
+          ]
+        },
+        "size": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "aspectRatio": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "pairs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "fromName": {
+                    "type": "string"
+                  },
+                  "toName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fromName",
+                  "toName"
+                ]
+              }
+            },
+            "named": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/namedValueFloat"
+              }
+            }
+          },
+          "required": [
+            "disabled",
+            "pairs"
+          ]
+        },
+        "zindexes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "levels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ]
+              }
+            }
+          },
+          "required": [
+            "disabled",
+            "levels"
+          ]
+        },
+        "normalize": {
+          "type": "object",
+          "description": "Normalization configuration.",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "palette": {
+              "type": "string",
+              "description": "Theme palette used to map reset/normalize colors.",
+              "enum": [
+                "primary",
+                "secondary",
+                "tertiary",
+                "neutral",
+                "neutral-variant",
+                "error"
+              ]
+            },
+            "reset": {
+              "type": "string",
+              "description": "Reset key from the available reset options or none.",
+              "enum": [
+                "none",
+                "destyle",
+                "meyer-reset",
+                "mini-reset",
+                "modern-normalize",
+                "normalize",
+                "piccalilli-modern-reset",
+                "sanitize",
+                "tailwind-preflight",
+                "tailwind",
+                "the-new-css-reset",
+                "eric-meyer",
+                "yui-reset"
+              ]
+            },
+            "semantic": {
+              "type": "string",
+              "description": "Semantic normalization baseline or none.",
+              "enum": [
+                "none",
+                "tailwind-typography",
+                "open-props-normalize",
+                "shadcn-docs",
+                "pico-css",
+                "bootstrap-reboot"
+              ]
+            }
+          },
+          "required": [
+            "disabled",
+            "palette",
+            "reset",
+            "semantic"
+          ]
+        }
+      },
+      "required": [
+        "viewport",
+        "size",
+        "aspectRatio",
+        "zindexes",
+        "normalize"
+      ]
+    },
+    "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "theme": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "imageUrl": {
+              "type": "string"
+            },
+            "theory": {
+              "type": "string",
+              "enum": [
+                "best",
+                "complementary",
+                "analogous",
+                "triad",
+                "split-complementary",
+                "square",
+                "tetradic"
+              ]
+            },
+            "darkMode": {
+              "description": "Theme output mode for light/dark schemes.",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "single",
+                    "media"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "class": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "class"
+                  ]
+                }
+              ]
+            },
+            "colorVision": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "protanopia",
+                    "protanomaly",
+                    "deuteranopia",
+                    "deuteranomaly",
+                    "tritanopia",
+                    "tritanomaly",
+                    "achromatopsia",
+                    "achromatomaly"
+                  ]
+                }
+              },
+              "required": [
+                "mode"
+              ]
+            },
+            "colorIdx": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "easing": {
+              "type": "string",
+              "enum": [
+                "linear",
+                "inquad",
+                "outquad",
+                "inoutquad",
+                "incubic",
+                "outcubic",
+                "inoutcubic",
+                "inquart",
+                "outquart",
+                "inoutquart",
+                "inquint",
+                "outquint",
+                "inoutquint",
+                "insine",
+                "outsine",
+                "inoutsine",
+                "inexpo",
+                "outexpo",
+                "inoutexpo",
+                "incirc",
+                "outcirc",
+                "outinquad",
+                "outincubic",
+                "outinsine",
+                "outincirc",
+                "inoutcirc",
+                "inelastic",
+                "outelastic",
+                "inoutelastic",
+                "inback",
+                "outback",
+                "inoutback",
+                "inbounce",
+                "outbounce",
+                "inoutbounce"
+              ]
+            },
+            "toneBiasPercentage": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 45,
+              "description": "Sets the theme palette min/max tones by trimming both ends equally."
+            },
+            "apca": {
+              "$ref": "#/$defs/apcaTargets"
+            }
+          },
+          "required": [
+            "disabled",
+            "imageUrl",
+            "theory",
+            "darkMode",
+            "colorVision",
+            "colorIdx",
+            "easing",
+            "toneBiasPercentage",
+            "apca"
+          ]
+        },
+        "named": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "prefix": {
+              "type": "string"
+            },
+            "negativeSteps": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "positiveSteps": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "hueStep": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            "chromaStep": {
+              "type": "number",
+              "minimum": -40,
+              "maximum": 40
+            },
+            "toneStep": {
+              "type": "number",
+              "minimum": -40,
+              "maximum": 40
+            },
+            "apca": {
+              "$ref": "#/$defs/apcaTargets"
+            },
+            "colors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "color": {
+                    "type": "string",
+                    "pattern": "^#[0-9A-Fa-f]{6}$"
+                  }
+                },
+                "required": [
+                  "name",
+                  "color"
+                ]
+              }
+            }
+          },
+          "required": [
+            "disabled",
+            "prefix",
+            "negativeSteps",
+            "positiveSteps",
+            "hueStep",
+            "chromaStep",
+            "toneStep",
+            "apca",
+            "colors"
+          ]
+        },
+        "charts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "qualitativeCount": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 25,
+              "description": "Number of qualitative chart colors to generate."
+            },
+            "qualitativeExport": {
+              "type": "boolean",
+              "description": "Whether to export the qualitative chart palette."
+            },
+            "divergingCount": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12,
+              "description": "Number of diverging palettes to generate."
+            },
+            "divergingExport": {
+              "type": "array",
+              "minItems": 12,
+              "maxItems": 12,
+              "items": {
+                "type": "boolean"
+              },
+              "description": "Whether to export each diverging chart palette."
+            },
+            "toneSteps": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 25,
+              "description": "Number of tone steps per chart palette."
+            },
+            "apca": {
+              "$ref": "#/$defs/apcaTargets"
+            }
+          },
+          "required": [
+            "disabled",
+            "qualitativeCount",
+            "qualitativeExport",
+            "divergingCount",
+            "divergingExport",
+            "toneSteps",
+            "apca"
+          ]
+        },
+        "gradients": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "Linear",
+                      "Radial",
+                      "Conic"
+                    ]
+                  },
+                  "angle": {
+                    "type": "number"
+                  },
+                  "repeating": {
+                    "type": "boolean"
+                  },
+                  "stops": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "palette": {
+                          "type": "string"
+                        },
+                        "toneStep": {
+                          "type": "integer"
+                        },
+                        "position": {
+                          "type": "number"
+                        },
+                        "interp": {
+                          "type": "string"
+                        },
+                        "easing": {
+                          "type": "string",
+                          "enum": [
+                            "",
+                            "linear",
+                            "inquad",
+                            "outquad",
+                            "inoutquad",
+                            "incubic",
+                            "outcubic",
+                            "inoutcubic",
+                            "inquart",
+                            "outquart",
+                            "inoutquart",
+                            "inquint",
+                            "outquint",
+                            "inoutquint",
+                            "insine",
+                            "outsine",
+                            "inoutsine",
+                            "inexpo",
+                            "outexpo",
+                            "inoutexpo",
+                            "incirc",
+                            "outcirc",
+                            "inoutcirc",
+                            "inelastic",
+                            "outelastic",
+                            "inoutelastic",
+                            "inback",
+                            "outback",
+                            "inoutback",
+                            "inbounce",
+                            "outbounce",
+                            "inoutbounce"
+                          ]
+                        },
+                        "stepCount": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "palette",
+                        "toneStep",
+                        "position"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "kind",
+                  "angle",
+                  "repeating",
+                  "stops"
+                ]
+              }
+            }
+          },
+          "required": [
+            "disabled",
+            "items"
+          ]
+        },
+        "shadows": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "palette": {
+              "type": "string",
+              "description": "Theme palette used as the shadow color base.",
+              "enum": [
+                "Primary",
+                "Secondary",
+                "Tertiary",
+                "Neutral",
+                "Neutral Variant",
+                "Error"
+              ]
+            },
+            "baseStep": {
+              "type": "integer",
+              "description": "Theme palette tone step used for shadows.",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "outer": {
+              "$ref": "#/$defs/shadowOuter"
+            },
+            "inner": {
+              "$ref": "#/$defs/shadowInner"
+            }
+          },
+          "required": [
+            "disabled",
+            "palette",
+            "baseStep",
+            "outer",
+            "inner"
+          ]
+        },
+        "code": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "index": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "invertDarkMode": {
+              "type": "boolean"
+            },
+            "apca": {
+              "$ref": "#/$defs/codeApcaTargets"
+            }
+          },
+          "required": [
+            "disabled",
+            "index",
+            "invertDarkMode",
+            "apca"
+          ]
+        }
+      },
+      "required": [
+        "theme",
+        "named",
+        "charts",
+        "gradients",
+        "shadows",
+        "code"
+      ]
+    },
+    "fonts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "families": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "faces": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "faces"
+                ]
+              }
+            }
+          },
+          "required": [
+            "disabled",
+            "values"
+          ]
+        },
+        "imports": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "options": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "preconnect": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "preconnect"
+              ]
+            },
+            "families": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "variants": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "italic": {
+                          "type": "boolean"
+                        },
+                        "weight": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "set": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer"
+                              }
+                            },
+                            "range": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "min": {
+                                  "type": "integer"
+                                },
+                                "max": {
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "min",
+                                "max"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "italic",
+                        "weight"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "variants"
+                ]
+              }
+            }
+          },
+          "required": [
+            "disabled",
+            "options",
+            "families"
+          ]
+        },
+        "weights": {
+          "$ref": "#/$defs/fontWeightsConfig"
+        },
+        "sizes": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "spacing": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "lineHeights": {
+          "$ref": "#/$defs/sizeConfigInt"
+        }
+      },
+      "required": [
+        "families",
+        "imports",
+        "weights",
+        "sizes",
+        "spacing",
+        "lineHeights"
+      ]
+    },
+    "borders": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "widths": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "radii": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "generators": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "type": "boolean"
+            },
+            "drawn": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "seed": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295
+                },
+                "longMin": {
+                  "type": "number"
+                },
+                "longMax": {
+                  "type": "number"
+                },
+                "longClampMin": {
+                  "type": "number"
+                },
+                "longClampMax": {
+                  "type": "number"
+                },
+                "shortMin": {
+                  "type": "number"
+                },
+                "shortMax": {
+                  "type": "number"
+                },
+                "shortClampMin": {
+                  "type": "number"
+                },
+                "shortClampMax": {
+                  "type": "number"
+                },
+                "shortMaxWeight": {
+                  "type": "number"
+                },
+                "longJitter": {
+                  "type": "number"
+                },
+                "shortJitter": {
+                  "type": "number"
+                },
+                "roundStep": {
+                  "type": "number"
+                },
+                "minGap": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "count",
+                "seed",
+                "longMin",
+                "longMax",
+                "longClampMin",
+                "longClampMax",
+                "shortMin",
+                "shortMax",
+                "shortClampMin",
+                "shortClampMax",
+                "shortMaxWeight",
+                "longJitter",
+                "shortJitter",
+                "roundStep",
+                "minGap"
+              ]
+            },
+            "blobs": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "seed": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295
+                },
+                "longMin": {
+                  "type": "number"
+                },
+                "longMax": {
+                  "type": "number"
+                },
+                "longClampMin": {
+                  "type": "number"
+                },
+                "longClampMax": {
+                  "type": "number"
+                },
+                "shortMin": {
+                  "type": "number"
+                },
+                "shortMax": {
+                  "type": "number"
+                },
+                "shortClampMin": {
+                  "type": "number"
+                },
+                "shortClampMax": {
+                  "type": "number"
+                },
+                "shortMaxWeight": {
+                  "type": "number"
+                },
+                "longJitter": {
+                  "type": "number"
+                },
+                "shortJitter": {
+                  "type": "number"
+                },
+                "roundStep": {
+                  "type": "number"
+                },
+                "minGap": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "count",
+                "seed",
+                "longMin",
+                "longMax",
+                "longClampMin",
+                "longClampMax",
+                "shortMin",
+                "shortMax",
+                "shortClampMin",
+                "shortClampMax",
+                "shortMaxWeight",
+                "longJitter",
+                "shortJitter",
+                "roundStep",
+                "minGap"
+              ]
+            },
+            "shouldGenerateDrawn": {
+              "type": "boolean"
+            },
+            "shouldGenerateBlobs": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "disabled",
+            "drawn",
+            "blobs",
+            "shouldGenerateDrawn",
+            "shouldGenerateBlobs"
+          ]
+        }
+      },
+      "required": [
+        "widths",
+        "radii",
+        "generators"
+      ]
+    },
+    "animations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "durations": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "distances": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "scales": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "rotations": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "opacities": {
+          "$ref": "#/$defs/sizeConfigInt"
+        },
+        "easings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ]
+          }
+        }
+      },
+      "required": [
+        "durations",
+        "distances",
+        "scales",
+        "rotations",
+        "opacities",
+        "easings"
+      ]
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "general": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "input": {
+              "type": "string"
+            },
+            "force": {
+              "type": "boolean"
+            },
+            "verbose": {
+              "type": "boolean"
+            },
+            "cpuProfile": {
+              "type": "string"
+            },
+            "watchMs": {
+              "type": "integer",
+              "description": "Milliseconds to debounce watch updates."
+            }
+          },
+          "required": [
+            "input",
+            "force",
+            "verbose",
+            "cpuProfile",
+            "watchMs"
+          ]
+        },
+        "export": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "output": {
+              "type": "string",
+              "description": "Path to the CSS output file."
+            },
+            "namespace": {
+              "type": "string"
+            },
+            "overwrite": {
+              "type": "boolean"
+            },
+            "includeColorFallback": {
+              "type": "boolean"
+            },
+            "includeFontImports": {
+              "type": "boolean"
+            },
+            "includeReducedMotion": {
+              "type": "boolean"
+            },
+            "fontDir": {
+              "type": "string"
+            },
+            "fontFormat": {
+              "type": "string",
+              "enum": [
+                "woff",
+                "woff2",
+                "both"
+              ]
+            },
+            "bundle": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "minifyWhitespace": {
+                  "type": "boolean"
+                },
+                "sourcemap": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "linked",
+                    "external",
+                    "inline",
+                    "inline-external"
+                  ]
+                },
+                "sourcesContent": {
+                  "type": "string",
+                  "enum": [
+                    "include",
+                    "exclude"
+                  ]
+                },
+                "sourceRoot": {
+                  "type": "string"
+                },
+                "lineLimit": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "minifyWhitespace",
+                "sourcemap",
+                "sourcesContent",
+                "sourceRoot",
+                "lineLimit"
+              ]
+            }
+          },
+          "required": [
+            "output",
+            "namespace",
+            "overwrite",
+            "includeColorFallback",
+            "includeFontImports",
+            "includeReducedMotion",
+            "fontDir",
+            "fontFormat",
+            "bundle"
+          ]
+        }
+      },
+      "required": [
+        "general",
+        "export"
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "general",
+    "colors",
+    "fonts",
+    "borders",
+    "animations",
+    "settings"
+  ],
+  "$defs": {
+    "fontWeightsConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "disabled": {
+          "type": "boolean"
+        },
+        "named": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fontWeightNamed"
+          }
+        }
+      },
+      "required": [
+        "disabled",
+        "named"
+      ]
+    },
+    "fontWeightNamed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ]
+    },
+    "sizeConfigInt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "disabled": {
+          "type": "boolean"
+        },
+        "baseMin": {
+          "type": "number"
+        },
+        "baseMax": {
+          "type": "number"
+        },
+        "scaleMin": {
+          "type": "string"
+        },
+        "scaleMax": {
+          "type": "string"
+        },
+        "negativeSteps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "positiveSteps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fromStep": {
+                "type": "integer"
+              },
+              "toStep": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "fromStep",
+              "toStep"
+            ]
+          }
+        },
+        "named": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedValueFloat"
+          }
+        }
+      },
+      "required": [
+        "disabled",
+        "baseMin",
+        "baseMax",
+        "scaleMin",
+        "scaleMax",
+        "negativeSteps",
+        "positiveSteps",
+        "pairs"
+      ]
+    },
+    "namedValueFloat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "min",
+        "max"
+      ]
+    },
+    "shadowOuter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "steps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pow": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "layer": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "alphaStep": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "alphaLayer": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "alphaMinScale": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "range": {
+          "$ref": "#/$defs/shadowOuterRange"
+        }
+      },
+      "required": [
+        "steps",
+        "pow",
+        "layer",
+        "alphaStep",
+        "alphaLayer",
+        "alphaMinScale",
+        "range"
+      ]
+    },
+    "shadowInner": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "steps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pow": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "alphaStep": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "range": {
+          "$ref": "#/$defs/shadowInnerRange"
+        }
+      },
+      "required": [
+        "steps",
+        "pow",
+        "alphaStep",
+        "range"
+      ]
+    },
+    "shadowOuterRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "yMin": {
+          "type": "number"
+        },
+        "yMax": {
+          "type": "number"
+        },
+        "blurMin": {
+          "type": "number"
+        },
+        "blurMax": {
+          "type": "number"
+        },
+        "spreadMin": {
+          "type": "number"
+        },
+        "spreadMax": {
+          "type": "number"
+        },
+        "opacityMin": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "opacityMax": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "strengthMin": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "strengthMax": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "yMin",
+        "yMax",
+        "blurMin",
+        "blurMax",
+        "spreadMin",
+        "spreadMax",
+        "opacityMin",
+        "opacityMax",
+        "strengthMin",
+        "strengthMax"
+      ]
+    },
+    "shadowInnerRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "yMin": {
+          "type": "number"
+        },
+        "yMax": {
+          "type": "number"
+        },
+        "blurMin": {
+          "type": "number"
+        },
+        "blurMax": {
+          "type": "number"
+        },
+        "opacityMin": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "opacityMax": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "strengthMin": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "strengthMax": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "yMin",
+        "yMax",
+        "blurMin",
+        "blurMax",
+        "opacityMin",
+        "opacityMax",
+        "strengthMin",
+        "strengthMax"
+      ]
+    },
+    "apcaTargets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "onTargetLc": {
+          "type": "number",
+          "minimum": 15,
+          "maximum": 106
+        },
+        "dimTargetLc": {
+          "type": "number",
+          "minimum": 15,
+          "maximum": 106
+        }
+      },
+      "required": [
+        "onTargetLc",
+        "dimTargetLc"
+      ]
+    },
+    "codeApcaTargets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "onTargetLc": {
+          "type": "number",
+          "minimum": 15,
+          "maximum": 106
+        },
+        "dimTargetLc": {
+          "type": "number",
+          "minimum": 15,
+          "maximum": 106
+        },
+        "surfaceTargetLc": {
+          "type": "number",
+          "minimum": 15,
+          "maximum": 106
+        }
+      },
+      "required": [
+        "onTargetLc",
+        "dimTargetLc",
+        "surfaceTargetLc"
+      ]
+    },
+    "pairInt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fromStep": {
+          "type": "integer"
+        },
+        "toStep": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "fromStep",
+        "toStep"
+      ]
+    },
+    "animationTokenRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "step": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "step"
+          ]
+        },
+        {
+          "required": [
+            "name"
+          ]
+        }
+      ]
+    },
+    "animationRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/animationTokenRef"
+        },
+        "to": {
+          "$ref": "#/$defs/animationTokenRef"
+        }
+      },
+      "required": [
+        "from",
+        "to"
+      ]
+    }
+  }
+}

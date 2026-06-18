@@ -143,7 +143,7 @@ def color-section [cfg: record] {
     (DIV {class: "block"} ( $roles | each {|r| color-ramp $r } ))
 
     (DIV {class: "block"}
-      (H3 {class: "subhead"} "One set in practice")
+      (H3 "One set in practice")
       (P {class: "note"} "Each card is built from a single color set: a background shade, its -on for text, and -dim for quieter text.")
       (DIV {class: "surfaces"} ( $roles | each {|r|
         (DIV {class: "surface" style: {background: $"var\(--($r)-2\)" color: $"var\(--($r)-2-on\)"}}
@@ -160,7 +160,7 @@ def color-section [cfg: record] {
       let pos = ($cfg.colors.named.positiveSteps)
       let names = ($cfg.colors.named.colors | get name)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Named brand colors")
+        (H3 "Named brand colors")
         (P {class: "note"} (token "--named-{brand}-{n}") $" : each brand color expanded into a ($neg)+1+($pos) shade ramp, every shade with -on and -dim.")
         (DIV {class: "brands"} ( $names | each {|b|
           let st = (steps $neg $pos)
@@ -177,7 +177,7 @@ def color-section [cfg: record] {
       let div = ($cfg.colors.charts.divergingCount)
       let tones = ($cfg.colors.charts.toneSteps)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Data visualization")
+        (H3 "Data visualization")
         (P {class: "note"} (token "--chart-qualitative-{n}") " : distinct colors for categories, picked to be easy to tell apart, each with -on and -dim.")
         (mini-ramp "--chart-qualitative" (1..$qual | each {|n| $"($n)"}) (1..$qual | each {|n| $"($n)"}))
         (P {class: "note" style: {"margin-top": "var(--size-1)"}} (token $"--chart-diverging-{1..($div)}-step-{1..($tones)}") " : ordered shade ramps for ranked data, every shade with -on and -dim.")
@@ -191,7 +191,7 @@ def color-section [cfg: record] {
     (if (not ($cfg.colors.gradients.disabled)) {
       let names = ($cfg.colors.gradients.items | get name)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Gradients")
+        (H3 "Gradients")
         (DIV {class: "gradients"} ( $names | each {|g|
           (DIV {class: "gradient-card" data-copy: $"--gradient-($g)"}
             (DIV {class: "swatch" style: {background: $"var\(--gradient-($g)\)"}})
@@ -205,7 +205,7 @@ def color-section [cfg: record] {
       # every --code-* token, read from the generated CSS so the list stays complete
       let code_tokens = (open --raw ($env.PWD | path join "assets/stellar.css") | decode utf-8 | parse -r '(--code-[a-z0-9-]+):' | get capture0 | uniq | sort)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Code & syntax")
+        (H3 "Code & syntax")
         (P {class: "note"} "The full set of syntax colors (keyword, string, function name, and so on), taken from the theme and flipped for dark mode. This is exactly what the code highlighter uses.")
         (DIV {class: "code-demo"}
           (PRE (CODE ($sample | .highlight rust))))
@@ -225,7 +225,7 @@ def type-section [cfg: record] {
       "A numbered scale for text size, with font families, weights, line height, and letter spacing alongside. Step 0 is 1rem; smaller steps shrink to fine print, larger steps grow to headings, and every step scales with the screen so text holds its proportions. Each specimen is set at its real size.")
 
     (DIV {class: "block"}
-      (H3 {class: "subhead"} "Size scale")
+      (H3 "Size scale")
       (P {class: "note"} (token "--font-size-0") " is the 1rem starting point; each step up is about 1.2x the one below it, each step down a little smaller.")
       (DIV {class: "type-scale"} ( (steps $sz_neg $sz_pos) | reverse | each {|n|
         (DIV {class: "type-row" data-copy: $"--font-size-($n)"}
@@ -237,7 +237,7 @@ def type-section [cfg: record] {
     (if (not ($cfg.fonts.families.disabled)) {
       let fams = ($cfg.fonts.families.values | get name | filter {|f| $f != "system-ui"})
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Families")
+        (H3 "Families")
         (P {class: "note"} "Ready-made stacks with system fallbacks, each a different voice. --font-sans for UI and body, --font-mono for code and figures, --font-serif for long-form; the rest are character choices. The same sentence is set in each to compare. " (token "--font-{name}") ".")
         (DIV {class: "families"} ( $fams | each {|f|
           (DIV {class: "family-row"}
@@ -250,7 +250,7 @@ def type-section [cfg: record] {
     (if (not ($cfg.fonts.weights.disabled)) {
       let ws = ($cfg.fonts.weights.named | get name)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Weights")
+        (H3 "Weights")
         (DIV {class: "weights"} ( $ws | each {|w|
           (DIV {class: "weight-item" data-copy: $"--font-weight-($w)"}
             (SPAN {class: "word" style: {"font-weight": $"var\(--font-weight-($w)\)"}} "Aa")
@@ -263,7 +263,7 @@ def type-section [cfg: record] {
       let lh_neg = ($cfg.fonts.lineHeights.negativeSteps)
       let lh_pos = ($cfg.fonts.lineHeights.positiveSteps)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Line height")
+        (H3 "Line height")
         (P {class: "note"} "A fixed line height for each text size, tighter for small text, airier for large. Borrow one for a much bigger heading and the lines can overlap. " (token "--font-line-height-{n}") ".")
         (DIV {class: "leading-demo"} ( (steps $lh_neg $lh_pos) | each {|n|
           (DIV {class: "box" data-copy: $"--font-line-height-($n)"}
@@ -277,7 +277,7 @@ def type-section [cfg: record] {
       let ls_neg = ($cfg.fonts.spacing.negativeSteps)
       let ls_pos = ($cfg.fonts.spacing.positiveSteps)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Letter spacing")
+        (H3 "Letter spacing")
         (P {class: "note"} "Negative steps tighten spacing for large headings, positive steps open it up for small text, zero in between. It also tightens a little as the screen widens. " (token "--font-letter-spacing-{n}") ".")
         (DIV {class: "tracking-demo"} ( (steps $ls_neg $ls_pos) | reverse | each {|n|
           (P {data-copy: $"--font-letter-spacing-($n)" style: {"letter-spacing": $"var\(--font-letter-spacing-($n)\)" "font-size": "var(--font-size-2)"}}
@@ -318,7 +318,7 @@ def borders-section [cfg: record] {
       let r_top = ($r_ints | math max)
       let r_blends = ($r_ints | where {|n| $n < $r_top} | each {|n| $"--border-radius-($n)-($n + 1)"})
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Corner radius")
+        (H3 "Corner radius")
         (DIV {class: "box-grid"} ( (steps $neg $pos) | each {|n|
           (DIV {class: "demo-box" data-copy: $"--border-radius-($n)" style: {"border-radius": $"var\(--border-radius-($n)\)"}}
             $"--border-radius-($n)")
@@ -331,7 +331,7 @@ def borders-section [cfg: record] {
       let neg = ($cfg.borders.widths.negativeSteps)
       let pos = ($cfg.borders.widths.positiveSteps)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Border width")
+        (H3 "Border width")
         (P {class: "note"} "Numbered steps that scale with the screen; thicker for more emphasis. " (token "--border-width-{n}") ".")
         (DIV {class: "box-grid"} ( (steps $neg $pos) | each {|n|
           (DIV {class: "border-box" data-copy: $"--border-width-($n)" style: {"border-width": $"var\(--border-width-($n)\)"}}
@@ -344,7 +344,7 @@ def borders-section [cfg: record] {
       let blobs = (if ($cfg.borders.generators.shouldGenerateBlobs) { $cfg.borders.generators.blobs.count } else { 0 })
       let drawn = (if ($cfg.borders.generators.shouldGenerateDrawn) { $cfg.borders.generators.drawn.count } else { 0 })
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Organic radii")
+        (H3 "Organic radii")
         (if $blobs > 0 {
           (DIV {class: "block"}
             (P {class: "note"} (token "--radius-blob-{n}") " : soft, asymmetric multi-corner blobs.")
@@ -395,7 +395,7 @@ def motion-section [cfg: record] {
     (compose-block $cfg)
 
     (DIV {class: "block"}
-      (H3 {class: "subhead"} "Raw amount stops")
+      (H3 "Raw amount stops")
       (P {class: "note"} "The chips above use friendly names (up, xl, muted). Each one is just a nickname for one of these numbered steps. Copy a number to use it directly.")
       (DIV {class: "raw-amounts"} (
         # numeric amount stops, read from the generated CSS so the set stays complete
@@ -417,7 +417,7 @@ def layout-section [cfg: record] {
     (if (not ($cfg.general.zindexes.disabled)) {
       let levels = ($cfg.general.zindexes.levels)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Stacking order")
+        (H3 "Stacking order")
         (P {class: "note"} "Named layers so overlapping elements stack in a set order: dropdown over the page, tooltip over that, dialog, drawer, and toast on top. No hand-picked numbers that drift out of order. The cards below overlap in that order. " (token "--zindex-{name}") ".")
         (DIV {class: "zindex-demo"} ( $levels | enumerate | each {|it|
           let i = $it.index
@@ -435,7 +435,7 @@ def layout-section [cfg: record] {
     (if (not ($cfg.general.aspectRatio.disabled)) {
       let named = ($cfg.general.aspectRatio.named)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Aspect ratio")
+        (H3 "Aspect ratio")
         (P {class: "note"} "Lock a box to a proportion so media holds its shape at any width: square for avatars, widescreen for 16:9 video, plus portrait, cinematic and ultrawide. " (token "--aspect-ratio-{name}") ".")
         (DIV {class: "aspect-grid"} ( $named | each {|a|
           (DIV {class: "aspect-box" data-copy: $"--aspect-ratio-($a.name)"
@@ -449,7 +449,7 @@ def layout-section [cfg: record] {
       let vmin = ($cfg.general.viewport.min)
       let vmax = ($cfg.general.viewport.max)
       (DIV {class: "block"}
-        (H3 {class: "subhead"} "Viewport bounds")
+        (H3 "Viewport bounds")
         (P {class: "note"} $"Every fluid size scales across this range: smallest at ($vmin)px and below, largest at ($vmax)px and above, smoothly in between. Text, spacing, radius, border width, and duration all scale between these two widths. You rarely set them directly; reach for them to line a media query up with the scales.")
         (DIV {class: "viewport-range"}
           (SPAN {class: "vp-edge"} $"($vmin)px")
@@ -485,7 +485,7 @@ def compose-block [cfg: record] {
     $names | each {|a| (BUTTON {class: "chip" data-set: $prop data-amount: $a data-copy: $"--($amount_pfx | get $prop)-($a)"} $a) }
   } | flatten)
   (DIV {class: "block compose"}
-    (H3 {class: "subhead"} "Compose")
+    (H3 "Compose")
     (P {class: "note"} "Pick a property, an amount, a duration, and an easing; toggle Activate to play the transition (changing any chip replays it), then copy the rule below. The box on the right is exactly what you would ship.")
     (DIV {class: "composer"}
       (DIV {class: "config"}
@@ -731,7 +731,7 @@ def notes-page [cfg: record, sections: list] {
             (section-head "pairing" "Pairing tokens" "Each shade comes with an -on for text that reads on it and a -dim for quieter text, both tuned to that exact shade. For an accent on a different surface, like a link on the page background, pick a shade from another ramp with enough contrast.")
 
             (DIV {class: "block"}
-              (H3 {class: "subhead"} "Built on a neutral-1 surface")
+              (H3 "Built on a neutral-1 surface")
               (P {class: "note"} "The three pairs this site runs on, over the neutral-1 background. Contrast is measured live, so flip the theme and it updates.")
               (DIV {class: "pairing-grid"}
                 (pair-card "--neutral-1" "--neutral-1-on" "Primary text" "headings, body")
@@ -741,8 +741,7 @@ def notes-page [cfg: record, sections: list] {
             )
 
             (DIV {class: "block"}
-              (H3 {class: "subhead"} "Making -dim readable")
-              (P {class: "change"} (CODE "dimTargetLc") " 30 -> 65")
+              (H3 "Making -dim readable: dimTargetLc 30 -> 65")
               (P {class: "note"} "-dim is the secondary text here: ledes, notes, captions. At the default 30 it is decorative, 1.7:1 in light mode, below the 4.5:1 body text needs. 65 is the lowest that makes light readable: 4.4:1 in light, 9.9:1 in dark, still softer than -on.")
               (DIV {class: "sweep"}
                 (TABLE
