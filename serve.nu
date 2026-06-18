@@ -725,10 +725,10 @@ def notes-page [cfg: record, sections: list] {
         (MAIN {class: "content"}
           (DIV {class: "intro"}
             (H1 "Notes")
-            (P {class: "lede"} "Decisions we made pairing Stellar's tokens on this site, and why.")
+            (P {class: "lede"} "How this site pairs Stellar's tokens, and why.")
           )
           (SECTION {class: "section"}
-            (section-head "pairing" "Pairing tokens" "Each shade comes with an -on for text and a -dim for quieter text, both tuned to that exact shade. To put a color on a different surface, pick a shade by the contrast you want: contrast comes from how far apart two shades are, not from which color.")
+            (section-head "pairing" "Pairing tokens" "Each shade comes with an -on for text that reads on it and a -dim for quieter text, both tuned to that exact shade. For an accent on a different surface, like a link on the page background, pick a shade from another ramp with enough contrast.")
 
             (DIV {class: "block"}
               (H3 {class: "subhead"} "Built on a neutral-1 surface")
@@ -742,7 +742,7 @@ def notes-page [cfg: record, sections: list] {
 
             (DIV {class: "block"}
               (H3 {class: "subhead"} "Making -dim readable")
-              (P {class: "note"} "We use -dim for every bit of secondary text here: ledes, notes, captions. It shipped too faint to read, 1.7:1 in light mode, below the 4.5:1 text needs. -dim is built to a contrast target (dimTargetLc), and the default 30 is meant for decoration, not reading. We raised it to 65: now 4.4:1 in light and 9.9:1 in dark, readable but still softer than -on. One target can't suit both modes, so we tuned for the harder one, light.")
+              (P {class: "note"} "-dim carries every bit of secondary text here: ledes, notes, captions. Its contrast target (dimTargetLc) defaults to 30, which is decorative, far too faint to read: 1.7:1 in light mode, below the 4.5:1 body text needs. This site sets it to 65 instead: 4.4:1 in light, 9.9:1 in dark, readable but still softer than -on. One target can't suit both modes, so 65 is tuned for the harder one, light.")
               (DIV {class: "sweep"}
                 (TABLE
                   (THEAD (TR (TH "dimTargetLc") (TH "light") (TH "dark") (TH "")))
