@@ -177,11 +177,6 @@ h3 {
   color: var(--neutral-1-on);
   margin: var(--size-3) 0 var(--size-1);
 }
-.note {
-  color: var(--neutral-1-dim);
-  font-size: var(--font-size--1);
-  margin: var(--size-0) 0;
-}
 
 /* ---- token chips ------------------------------------------------- */
 
