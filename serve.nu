@@ -650,7 +650,7 @@ def home-page [cfg: record, sections: list] {
         (MAIN {class: "content"}
           (DIV {class: "intro"}
             (H1 "See what Stellar gives you")
-            (P {class: "lede"} "Stellar turns one config file into a complete design system, plain CSS variables for color, type, space, shadow, motion, and layout. Sizes scale with the screen; colors flip with the theme. This page shows every token in use: click any to copy it, and flip the theme to check light and dark.")
+            (P {class: "lede"} "Stellar turns one config file into a complete design system: tokens for color, type, space, shadow, motion, and layout, delivered as plain CSS custom properties. Sizes scale with the screen; colors flip with the theme. This page shows every token in use: click any to copy it, and flip the theme to check light and dark.")
           )
           (color-section $cfg)
           (type-section $cfg)
@@ -742,7 +742,8 @@ def notes-page [cfg: record, sections: list] {
 
             (DIV {class: "block"}
               (H3 {class: "subhead"} "Making -dim readable")
-              (P {class: "note"} "-dim is the secondary text here: ledes, notes, captions. Its contrast target (dimTargetLc) defaults to 30, decorative and too faint to read: 1.7:1 in light mode, below the 4.5:1 body text needs. This site sets it to 65, the lowest value that makes light mode readable: 4.4:1 in light, 9.9:1 in dark, still softer than -on.")
+              (P {class: "change"} (CODE "dimTargetLc") " 30 -> 65")
+              (P {class: "note"} "-dim is the secondary text here: ledes, notes, captions. At the default 30 it is decorative, 1.7:1 in light mode, below the 4.5:1 body text needs. 65 is the lowest that makes light readable: 4.4:1 in light, 9.9:1 in dark, still softer than -on.")
               (DIV {class: "sweep"}
                 (TABLE
                   (THEAD (TR (TH "dimTargetLc") (TH "light") (TH "dark") (TH "")))
