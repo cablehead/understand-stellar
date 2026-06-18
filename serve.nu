@@ -138,7 +138,7 @@ def color-section [cfg: record] {
   let roles = [primary secondary tertiary neutral neutral-variant error]
   (SECTION {class: "section"}
     (section-head "color" "Color"
-      "Six color sets, each with a job: primary for buttons and links, neutral for backgrounds and body text, error for danger, plus three more. Each runs 12 shades from light to dark and flips in dark mode, so you pick by job and it adapts. For any shade, -on is text that stays readable on it, and -dim is quieter text like captions. Each swatch shows its number in its own -on, so you can see where text holds up.")
+      "Six color sets, each with a job: primary for buttons and links, neutral for backgrounds and body text, error for danger, plus three more. Each runs 12 shades from light to dark; the ramp flips in dark mode, so a shade keeps its job in both themes. Every shade has an -on for text that reads on it and a -dim for quieter text. Each swatch prints its number in its own -on, so you can see where text stays readable.")
 
     (DIV {class: "block"} ( $roles | each {|r| color-ramp $r } ))
 
