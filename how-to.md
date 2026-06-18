@@ -30,8 +30,8 @@ www-next-gen layers on top:                   v
   assets/brand.css  the brand-blue surface, nav, landing hero (colors from named seeds)
 ```
 
-Everything draws from the stellar custom properties. Style raw tags first; reach
-for utilities, then components, only when elements cannot carry it.
+Everything draws from the stellar tokens. Style raw tags first; reach for
+utilities, then components, only when elements cannot carry it.
 
 ## The binary and key
 

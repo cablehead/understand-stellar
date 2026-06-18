@@ -650,7 +650,7 @@ def home-page [cfg: record, sections: list] {
         (MAIN {class: "content"}
           (DIV {class: "intro"}
             (H1 "See what Stellar gives you")
-            (P {class: "lede"} "Stellar turns one config file into a complete design system: tokens for color, type, space, shadow, motion, and layout, delivered as plain CSS custom properties. Sizes scale with the screen; colors flip with the theme. This page shows every token in use: click any to copy it, and flip the theme to check light and dark.")
+            (P {class: "lede"} "Stellar turns one config file into a complete design system: tokens for color, type, space, shadow, motion, and layout, delivered as plain CSS. Sizes scale with the screen; colors flip with the theme. This page shows every token in use: click any to copy it, and flip the theme to check light and dark.")
           )
           (color-section $cfg)
           (type-section $cfg)

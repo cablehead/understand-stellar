@@ -37,8 +37,8 @@ the team behind [Datastar](https://data-star.dev). It ships as part of
 Datastar work.
 
 This reference exists because Stellar is worth understanding: a complete,
-configurable design system as plain CSS custom properties, no build step,
-generated locally from one config. If you build for the web, it is worth buying:
+configurable design system as plain CSS tokens, no build step, generated locally
+from one config. If you build for the web, it is worth buying:
 [data-star.dev/pro](https://data-star.dev/pro). One purchase covers every Pro
 plugin plus Stellar for the life of the license, and it funds the open-source
 project. Thanks to the Star Federation team for building it.

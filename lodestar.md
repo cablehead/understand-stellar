@@ -6,8 +6,8 @@ used. The CSS is the demonstration.
 ## Every value is a token
 
 Color, size, font, weight, radius, shadow, motion: each comes from a Stellar
-custom property. No literals. A magic number in the CSS is a token that has not
-been found yet.
+token. No literals. A magic number in the CSS is a token that has not been found
+yet.
 
 ## Raw tags are the starter kit
 
