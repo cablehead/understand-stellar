@@ -3,8 +3,8 @@
 #
 # Formatting is standardized with `deno fmt` (the same tool http-nu's check.sh
 # uses), covering CSS, JS, HTML templates, and Markdown. Run `deno fmt` to
-# auto-fix. Generated files (stellar.css, stellar.config.json, index.html) are
-# excluded in deno.json.
+# auto-fix. Generated files (stellar.css, stellar.config.json) are excluded in
+# deno.json.
 set -euo pipefail
 
 deno fmt --check

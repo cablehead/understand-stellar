@@ -4,7 +4,7 @@ use lib.nu *
 
 # understand-stellar: a visual reference for the Stellar CSS framework.
 #
-# One scrolling page that shows every design variable Stellar gives you,
+# One scrolling page that shows every design token Stellar gives you,
 # grouped by the decision it serves and demonstrated visually rather than
 # just named. Light/dark comes from stellar's :root.dark overrides; the
 # toggle flips the `dark` class on <html>.
@@ -23,23 +23,27 @@ let SECTIONS = [
   [layout "Layout"]
 ]
 
-def head-block [] {
+# Per-page <head>. `meta` carries {title, description, path, image}; every page
+# passes its own, so OG/Twitter tags are generated once here for all of them.
+def head-block [meta: record] {
+  let base = "https://understanding-stellar.cross.stream"
+  let img = $"($base)/assets/($meta.image)"
   (HEAD
     (META {charset: "utf-8"})
     (META {name: "viewport" content: "width=device-width, initial-scale=1"})
-    (TITLE "understand stellar")
-    (META {name: "description" content: "A visual reference for the Stellar CSS framework: every design token shown visually, not just named. Click any token to copy it; toggle light and dark."})
+    (TITLE $meta.title)
+    (META {name: "description" content: $meta.description})
     (META {property: "og:type" content: "website"})
-    (META {property: "og:title" content: "understand stellar"})
-    (META {property: "og:description" content: "Every Stellar CSS design token, shown visually. Click any token to copy it."})
-    (META {property: "og:url" content: "https://cablehead.github.io/understand-stellar/"})
-    (META {property: "og:image" content: "https://cablehead.github.io/understand-stellar/assets/og.png"})
+    (META {property: "og:title" content: $meta.title})
+    (META {property: "og:description" content: $meta.description})
+    (META {property: "og:url" content: $"($base)/($meta.path)"})
+    (META {property: "og:image" content: $img})
     (META {property: "og:image:width" content: "1200"})
     (META {property: "og:image:height" content: "630"})
     (META {name: "twitter:card" content: "summary_large_image"})
-    (META {name: "twitter:title" content: "understand stellar"})
-    (META {name: "twitter:description" content: "Every Stellar CSS design token, shown visually. Click any token to copy it."})
-    (META {name: "twitter:image" content: "https://cablehead.github.io/understand-stellar/assets/og.png"})
+    (META {name: "twitter:title" content: $meta.title})
+    (META {name: "twitter:description" content: $meta.description})
+    (META {name: "twitter:image" content: $img})
     (SCRIPT {__html: "
 (function(){
   var t = localStorage.getItem('theme');
@@ -47,21 +51,27 @@ def head-block [] {
   if (t === 'dark') document.documentElement.classList.add('dark');
 })();
 "})
-    (LINK {rel: "stylesheet" href: "assets/stellar.css"})
-    (LINK {rel: "stylesheet" href: "assets/page.css"})
+    (LINK {rel: "stylesheet" href: "/assets/stellar.css"})
+    (LINK {rel: "stylesheet" href: "/assets/page.css"})
     (SCRIPT-ICONIFY)
   )
 }
 
-def sidebar [sections: list] {
+def sidebar [sections: list, here: string] {
+  # served from the closure at the root: canonical absolute routes. Section
+  # links are in-page anchors on home, cross-page (/#id) from other routes.
+  let p = (if $here == "/" { "" } else { "/" })
   (ASIDE {class: "sidebar"}
     (DIV {class: "brand"}
-      (H1 "understand stellar")
-      (P "A visual map of every design variable. Click any token to copy it.")
+      (H1 (A {href: "/"} "understand stellar"))
+      (P "A visual map of every design token. Click any to copy it.")
     )
     (BUTTON {class: "nav-toggle" data-act: "toggle-nav"} "Sections")
     (NAV {class: "section-nav"}
-      (UL ( $sections | each {|s| LI (A {href: $"#($s.0)"} $s.1) } ))
+      (UL
+        ( $sections | each {|s| LI (A {href: $"($p)#($s.0)"} $s.1) } )
+        (LI {class: "nav-page"} (A {href: "/notes" class: (if $here == "/notes" { "current" } else { "" })} "Notes"))
+      )
     )
     (BUTTON {class: "theme-toggle" data-act: "toggle-theme"}
       (ICONIFY "lucide:sun-moon" {width: "16" height: "16"})
@@ -170,7 +180,7 @@ def color-section [cfg: record] {
         (H3 {class: "subhead"} "Data visualization")
         (P {class: "note"} (token "--chart-qualitative-{n}") " : distinct colors for categories, picked to be easy to tell apart, each with -on and -dim.")
         (mini-ramp "--chart-qualitative" (1..$qual | each {|n| $"($n)"}) (1..$qual | each {|n| $"($n)"}))
-        (P {class: "note" style: {"margin-top": "var(--size-1)"}} (token $"--chart-diverging-{1..($div)}-step-{1..($tones)}") " : ordered shade ramps for ranked data, each step with -on and -dim.")
+        (P {class: "note" style: {"margin-top": "var(--size-1)"}} (token $"--chart-diverging-{1..($div)}-step-{1..($tones)}") " : ordered shade ramps for ranked data, every shade with -on and -dim.")
         (DIV {class: "chart-ramps"} ( 1..$div | each {|p|
           let labs = (1..$tones | each {|n| $"($n)"})
           (mini-ramp $"--chart-diverging-($p)-step" $labs $labs)
@@ -626,34 +636,152 @@ document.addEventListener('click', function(e){
 "})
 }
 
-{|req|
-  dispatch $req [
-    (route {path: "/"} {|req ctx|
-      (HTML
-        (head-block)
-        (BODY
-          (DIV {class: "shell"}
-            (sidebar $SECTIONS)
-            (MAIN {class: "content"}
-              (DIV {class: "intro"}
-                (H1 "See what Stellar gives you")
-                (P {class: "lede"} "Stellar turns one config file into a full set of CSS variables: colors, text sizes, spacing, shadows, motion, and layout. This page shows each one in action. Click any variable to copy it, and flip the theme to see light and dark.")
-              )
-              (color-section $cfg)
-              (type-section $cfg)
-              (space-section $cfg)
-              (borders-section $cfg)
-              (elevation-section $cfg)
-              (motion-section $cfg)
-              (layout-section $cfg)
-            )
+def home-page [cfg: record, sections: list] {
+  (HTML
+    (head-block {
+      title: "understand stellar"
+      description: "Every Stellar CSS design token, shown visually. Click any token to copy it."
+      path: ""
+      image: "og.png"
+    })
+    (BODY
+      (DIV {class: "shell"}
+        (sidebar $sections "/")
+        (MAIN {class: "content"}
+          (DIV {class: "intro"}
+            (H1 "See what Stellar gives you")
+            (P {class: "lede"} "Stellar turns one config file into a full set of CSS variables: colors, text sizes, spacing, shadows, motion, and layout. This page shows each one in action. Click any token to copy it, and flip the theme to see light and dark.")
           )
-          (DIV {class: "toast-copied" id: "toast"} "")
-          (page-script)
-          (compose-script)
+          (color-section $cfg)
+          (type-section $cfg)
+          (space-section $cfg)
+          (borders-section $cfg)
+          (elevation-section $cfg)
+          (motion-section $cfg)
+          (layout-section $cfg)
         )
       )
+      (DIV {class: "toast-copied" id: "toast"} "")
+      (page-script)
+      (compose-script)
+    )
+  )
+}
+
+# ---- notes: the journey + how to pair tokens ------------------------
+
+# A live pairing sample: real surface + foreground tokens, with the WCAG
+# contrast measured in the browser (see notes-script) so it tracks the theme.
+def pair-card [surface: string, fg: string, label: string, desc: string] {
+  (DIV {class: "pair-card"}
+    (DIV {class: "pair-sample" style: {background: $"var\(($surface)\)" color: $"var\(($fg)\)"}}
+      (SPAN {class: "pair-fg"} $fg)
+      (SPAN {class: "pair-ratio"} "")
+    )
+    (DIV {class: "pair-meta"}
+      (STRONG $label)
+      (SPAN {class: "note"} $desc)
+      (DIV {class: "token-row"} (token $surface) (token $fg))
+    )
+  )
+}
+
+def sweep-row [lc: string, light: string, dark: string, note: string] {
+  (TR (TD $lc) (TD {class: "num"} $light) (TD {class: "num"} $dark) (TD {class: "muted"} $note))
+}
+
+def notes-script [] {
+  (SCRIPT {__html: r##'
+function toRGB(c){var cv=document.createElement("canvas");cv.width=1;cv.height=1;var x=cv.getContext("2d");x.fillStyle="#000";x.fillStyle=c;x.fillRect(0,0,1,1);var d=x.getImageData(0,0,1,1).data;return [d[0],d[1],d[2]];}
+function lin(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);}
+function rl(p){return 0.2126*lin(p[0])+0.7152*lin(p[1])+0.0722*lin(p[2]);}
+function ratio(a,b){var l1=rl(a),l2=rl(b),hi=Math.max(l1,l2),lo=Math.min(l1,l2);return (hi+0.05)/(lo+0.05);}
+function annotate(){
+  document.querySelectorAll(".pair-sample").forEach(function(el){
+    var cs=getComputedStyle(el);
+    var r=ratio(toRGB(cs.backgroundColor),toRGB(cs.color));
+    var b=el.querySelector(".pair-ratio");
+    if(!b)return;
+    var sym=r>=4.5?" \u2713":(r>=3?" \u2248":" \u2717");
+    b.textContent=r.toFixed(1)+":1"+sym;
+    b.className="pair-ratio "+(r>=4.5?"ok":(r>=3?"mid":"bad"));
+  });
+}
+annotate();
+new MutationObserver(annotate).observe(document.documentElement,{attributes:true,attributeFilter:["class"]});
+'##})
+}
+
+def notes-page [cfg: record, sections: list] {
+  (HTML
+    (head-block {
+      title: "Notes | understand stellar"
+      description: "Working notes on understanding Stellar, and how to pair its design tokens for readable, accessible UI."
+      path: "notes"
+      image: "og-notes.png"
     })
+    (BODY
+      (DIV {class: "shell"}
+        (sidebar $sections "/notes")
+        (MAIN {class: "content"}
+          (DIV {class: "intro"}
+            (H1 "Notes")
+            (P {class: "lede"} "Working notes from understanding Stellar: the decisions, the dead ends, and how to pair tokens so they actually read. This page grows as the journey does.")
+          )
+          (SECTION {class: "section"}
+            (section-head "pairing" "Pairing tokens" "Every shade in a ramp is a surface, with its own -on for readable text and -dim for a quieter companion. -on and -dim only work on their own shade. For a color on a different surface, reach into the ramp and pick a shade by contrast, which comes from how many shades apart two colors sit, not from which set they belong to.")
+
+            (DIV {class: "block"}
+              (H3 {class: "subhead"} "Built on a neutral-1 surface")
+              (P {class: "note"} "What this whole site is built from. Each sample is the real token pair, and its WCAG contrast is measured live in your browser. Flip the theme and the numbers update.")
+              (DIV {class: "pairing-grid"}
+                (pair-card "--neutral-1" "--neutral-1-on" "Primary text" "headings, body")
+                (pair-card "--neutral-1" "--neutral-1-dim" "Secondary text" "ledes, notes, captions")
+                (pair-card "--neutral-1" "--primary-7" "Link / accent" "links, focus, active")
+              )
+            )
+
+            (DIV {class: "block"}
+              (H3 {class: "subhead"} "Making -dim readable")
+              (P {class: "note"} "-dim is generated to an APCA contrast target. At the default Lc 30 it is decorative, far too faint for the prose this site is mostly made of. Raising the target makes it a legible secondary tier. One value cannot be both readable and muted in both modes, since APCA is polarity-aware, so the light side needs a higher target; 65 is the lowest that clears light while keeping dim softer than -on.")
+              (DIV {class: "sweep"}
+                (TABLE
+                  (THEAD (TR (TH "dimTargetLc") (TH "light") (TH "dark") (TH "")))
+                  (TBODY
+                    (sweep-row "30 (before)" "1.7" "4.0" "decorative")
+                    (sweep-row "50" "2.8" "7.0" "light still fails")
+                    (sweep-row "60" "3.8" "8.9" "")
+                    (sweep-row "65 (after)" "4.4" "9.9" "readable, still muted")
+                    (sweep-row "70" "5.2" "11.0" "dark nears -on")
+                  )
+                )
+                (P {class: "note"} "WCAG contrast of --neutral-1-dim on --neutral-1, light / dark.")
+              )
+              (DIV {class: "ba"}
+                (FIGURE (IMG {src: "/assets/pairing-before.png" alt: "secondary text washed out"}) (FIGCAPTION "Before: Lc 30 (1.7:1)"))
+                (FIGURE (IMG {src: "/assets/pairing-after.png" alt: "secondary text readable"}) (FIGCAPTION "After: Lc 65 (4.4:1)"))
+              )
+            )
+          )
+        )
+      )
+      (DIV {class: "toast-copied" id: "toast"} "")
+      (page-script)
+      (notes-script)
+    )
+  )
+}
+
+# Each page is deterministic from the config, so render once at startup and
+# serve the cached HTML. A reload re-sources this file and re-renders; without
+# the cache the full token reference rebuilds on every request (~4s).
+let HOME = (home-page $cfg $SECTIONS)
+let NOTES = (notes-page $cfg $SECTIONS)
+
+{|req|
+  dispatch $req [
+    (route {path: "/"} {|req ctx| $HOME })
+    (route {path: "/notes"} {|req ctx| $NOTES })
 
     (route {path-matches: "/assets/:file"} {|req ctx|
       .static ($env.PWD | path join "assets") $ctx.file

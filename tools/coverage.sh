@@ -14,9 +14,14 @@ for a in "$@"; do
   esac
 done
 
-http-nu eval build.nu >/dev/null
+# Render the served pages directly from the handler (no static build), so the
+# audit always reflects exactly what the closure serves.
+http-nu eval -c '
+  let h = (source serve.nu)
+  ["/" "/notes"] | each {|p| do $h { method: "GET", path: $p, headers: {} } | get __html } | str join "\n"
+' >/tmp/cov_pages.html
 
-grep -oE 'data-copy="[^"]+"' index.html | sed 's/data-copy="//;s/"//' \
+grep -oE 'data-copy="[^"]+"' /tmp/cov_pages.html | sed 's/data-copy="//;s/"//' \
   | grep '^--' | grep -v '{' | sort -u >/tmp/cov_copyable.txt
 grep -oE '\-\-[a-zA-Z0-9-]+:' assets/stellar.css | sed 's/:$//' | sort -u >/tmp/cov_stellar.txt
 
@@ -32,7 +37,7 @@ dead=$(comm -13 /tmp/cov_stellar.txt /tmp/cov_copyable.txt | wc -l)
 # (e.g. --font-, from --font-{name} or --anim-duration-*) are skipped.
 python3 - <<'PY' >/tmp/cov_prose_bad.txt
 import re
-html = open("index.html").read()
+html = open("/tmp/cov_pages.html").read()
 html = re.sub(r"<script.*?</script>", " ", html, flags=re.S)
 html = re.sub(r"<style.*?</style>", " ", html, flags=re.S)
 text = re.sub(r"<[^>]+>", " ", html)

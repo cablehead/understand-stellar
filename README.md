@@ -1,7 +1,7 @@
 <h1 align="center">understand stellar</h1>
 
 <p align="center">
-  <a href="https://cablehead.github.io/understand-stellar/">
+  <a href="https://understanding-stellar.cross.stream/">
     <img alt="understand stellar: every Stellar CSS design token, shown visually" src="./assets/og.png" width="640" />
   </a>
 </p>
@@ -10,7 +10,7 @@
   A visual reference for the <a href="https://data-star.dev/pro#stellar-css">Stellar</a> CSS framework:
   every design token, shown visually rather than just named.
   <br /><br />
-  <a href="https://cablehead.github.io/understand-stellar/">Live site</a>
+  <a href="https://understanding-stellar.cross.stream/">Live site</a>
   &nbsp;&middot;&nbsp;
   <a href="#what-it-covers">What it covers</a>
   &nbsp;&middot;&nbsp;
@@ -19,14 +19,15 @@
   <a href="https://data-star.dev/pro">Buy Stellar</a>
 </p>
 
-One scrolling page that shows every design variable Stellar generates, grouped
-by the decision it serves and demonstrated visually rather than just named.
-Click any token to copy its variable name; toggle the theme to check both light
-and dark.
+One scrolling page that shows every design token Stellar generates, grouped by
+the decision it serves and demonstrated visually rather than just named. Click
+any token to copy its name; toggle the theme to check both light and dark.
 
-Built with [http-nu](https://http-nu.cross.stream): one Nushell handler builds
-the page with http-nu's HTML DSL. `build.nu` renders it once to a static
-`index.html` for GitHub Pages; you can also run it live (see Run).
+Built with [http-nu](https://http-nu.cross.stream): the site is one Nushell
+handler, served directly. Each page is built with http-nu's HTML DSL and
+rendered once at startup, then served from the closure (see Run). It is hosted
+at
+[understanding-stellar.cross.stream](https://understanding-stellar.cross.stream/).
 
 ## Stellar is made by Star Federation
 

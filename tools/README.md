@@ -21,8 +21,8 @@ node tools/og.cjs dark /tmp/x.png # explicit theme + output path
 
 The output is 2400x1260 (1200x630 at `deviceScaleFactor: 2`) so it stays crisp
 when platforms downscale. The card is referenced as an absolute URL from the
-`og:image` / `twitter:image` meta tags in `serve.nu`, pointing at the GitHub
-Pages copy under `assets/og.png`. Regenerate it whenever the Color section's
+`og:image` / `twitter:image` meta tags in `serve.nu` (the `base` in
+`head-block`), served from `assets/`. Regenerate it whenever the Color section's
 look changes, then commit the new PNG.
 
 Override the throwaway server port with `PORT=4789 node tools/og.cjs` if 4788 is
