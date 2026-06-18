@@ -138,7 +138,7 @@ def color-section [cfg: record] {
   let roles = [primary secondary tertiary neutral neutral-variant error]
   (SECTION {class: "section"}
     (section-head "color" "Color"
-      "Six color sets, each with a job: primary for buttons and links, neutral for backgrounds and body text, error for danger, plus three more. Each runs 12 shades from light to dark; the ramp flips in dark mode, so a shade keeps its job in both themes. Every shade has an -on for text that reads on it and a -dim for quieter text. Each swatch prints its number in its own -on, so you can see where text stays readable.")
+      "Six color sets (primary, neutral, error, and three more), each a 12-shade ramp from light to dark that flips in dark mode. Every shade carries an -on for text that reads on it and a -dim for quieter text. Build from one set: a shade for the surface, its -on for text, its -dim for the quiet parts. Each swatch shows its number in its own -on, so you can see where text stays legible.")
 
     (DIV {class: "block"} ( $roles | each {|r| color-ramp $r } ))
 
@@ -222,7 +222,7 @@ def type-section [cfg: record] {
   let sz_pos = ($cfg.fonts.sizes.positiveSteps)
   (SECTION {class: "section"}
     (section-head "type" "Type"
-      "Text sizes on a numbered scale, plus font families, weights, line height, and letter spacing. Step 0 is your 1rem body size; smaller steps shrink toward fine print, larger steps grow toward headings. Each size scales smoothly with the screen, so text stays in proportion from phone to desktop. Every sample here is set at its real size.")
+      "A numbered scale for text size, with font families, weights, line height, and letter spacing alongside. Step 0 is 1rem; smaller steps shrink to fine print, larger steps grow to headings, and every step scales with the screen so text holds its proportions. Each specimen is set at its real size.")
 
     (DIV {class: "block"}
       (H3 {class: "subhead"} "Size scale")
@@ -295,7 +295,7 @@ def space-section [cfg: record] {
   let pos = ($cfg.general.size.positiveSteps)
   (SECTION {class: "section"}
     (section-head "space" "Space & size"
-      "One numbered scale for padding, margins, gaps, and sizes. Reuse the same step for related spacing and the layout keeps a steady rhythm. Like text, each step scales smoothly with the screen. Each bar's width is the value itself.")
+      "One numbered scale for every gap, padding, margin, and size. Reuse a step for related spacing to hold a steady rhythm; like type, each step scales with the screen. Each bar's width is the token's value.")
     (DIV {class: "space-stack"} ( (steps $neg $pos) | each {|n|
       (DIV {class: "space-bar" data-copy: $"--size-($n)"}
         (SPAN {class: "lbl"} $"--size-($n)")
@@ -309,7 +309,7 @@ def space-section [cfg: record] {
 def borders-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "borders" "Borders & radius"
-      "Corner roundness and border thickness, each on its own numbered scale. A small radius for inputs and cards, a large one for pills and avatars; thicker borders for more emphasis. The blob and hand-drawn shapes are ready-made irregular corners for surfaces that should feel less rigid. Each box here uses the value directly.")
+      "Two numbered scales (corner radius and border width), plus a few organic shapes. Small radius for inputs and cards, large for pills and avatars; thicker borders for more emphasis. The blob and hand-drawn radii are ready-made irregular corners. Each box uses the value directly.")
 
     (if (not ($cfg.borders.radii.disabled)) {
       let neg = ($cfg.borders.radii.negativeSteps)
@@ -373,7 +373,7 @@ def borders-section [cfg: record] {
 def elevation-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "elevation" "Elevation"
-      "Shadows that show how far something sits off the page, each built from a few soft layers so it reads as real, not a flat drop. The higher the step, the more it lifts: a card sits low, a dropdown higher, a dialog highest. Negative steps press inward instead, for input fields. Step 0 is no shadow.")
+      "A shadow scale for how far a surface sits off the page. Each step stacks soft layers so the shadow reads as real, not a flat drop; the higher the step, the more it lifts, a card low, a dropdown higher, a dialog highest. Negative steps press inward for inset fields. Step 0 is none.")
     (if (not ($cfg.colors.shadows.disabled)) {
       let outer = ($cfg.colors.shadows.outer.steps)
       let inner = ($cfg.colors.shadows.inner.steps)
@@ -391,7 +391,7 @@ def elevation-section [cfg: record] {
 def motion-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "motion" "Motion"
-      "A transition is three choices: how it moves (the easing), how long it takes (the duration), and how far it goes (the amount: scale, rotate, slide, or fade). Easings run from a plain standard curve to springy ones like bounce and shake. Durations adjust to screen size, and switch off when the visitor prefers reduced motion. Build one below, play it, and copy the CSS it produces.")
+      "A transition combines three tokens: an easing (how it moves), a duration (how long), and a transform amount (how far, scale, rotate, slide, or fade). Easings range from a plain standard curve to springy ones like bounce and shake; durations scale with the screen and switch off under reduced-motion. Build one below, play it, and copy the CSS.")
     (compose-block $cfg)
 
     (DIV {class: "block"}
@@ -412,7 +412,7 @@ def motion-section [cfg: record] {
 def layout-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "layout" "Layout"
-      "Stacking order, aspect ratios, and the screen-width limits behind every fluid size. Named z-index layers keep overlapping elements in order, a dropdown over the page, a dialog over that, without guessing numbers. Aspect-ratio tokens hold media at set proportions. The viewport min and max are the narrow and wide widths every fluid size scales between.")
+      "Stacking order, media proportions, and the viewport bounds behind the fluid scales. Named z-index steps keep overlapping UI in a fixed order without magic numbers; aspect-ratio tokens hold media at set proportions. The viewport min and max are the widths every fluid size scales between.")
 
     (if (not ($cfg.general.zindexes.disabled)) {
       let levels = ($cfg.general.zindexes.levels)
@@ -650,7 +650,7 @@ def home-page [cfg: record, sections: list] {
         (MAIN {class: "content"}
           (DIV {class: "intro"}
             (H1 "See what Stellar gives you")
-            (P {class: "lede"} "Stellar turns one config file into a full set of CSS variables: colors, text sizes, spacing, shadows, motion, and layout. This page shows each one in action. Click any token to copy it, and flip the theme to see light and dark.")
+            (P {class: "lede"} "Stellar turns one config file into a complete design system, plain CSS variables for color, type, space, shadow, motion, and layout. Sizes scale with the screen; colors flip with the theme. This page shows every token in use: click any to copy it, and flip the theme to check light and dark.")
           )
           (color-section $cfg)
           (type-section $cfg)
