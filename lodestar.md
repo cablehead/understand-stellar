@@ -1,7 +1,7 @@
 # Lodestar: how this site is styled
 
 This site is built with Stellar, so it is styled the way Stellar wants to be
-used. The CSS is the demonstration. Build it like a box of Lego.
+used. Build it like a box of Lego.
 
 ## Every value is a token
 
