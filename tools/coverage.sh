@@ -18,7 +18,7 @@ done
 # audit always reflects exactly what the closure serves.
 http-nu eval -c '
   let h = (source serve.nu)
-  ["/" "/notes"] | each {|p| do $h { method: "GET", path: $p, headers: {} } | get __html } | str join "\n"
+  ["/" "/notes" "/glossary"] | each {|p| do $h { method: "GET", path: $p, headers: {} } | get __html } | str join "\n"
 ' >/tmp/cov_pages.html
 
 grep -oE 'data-copy="[^"]+"' /tmp/cov_pages.html | sed 's/data-copy="//;s/"//' \

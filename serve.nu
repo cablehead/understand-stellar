@@ -71,6 +71,7 @@ def sidebar [sections: list, here: string] {
       (UL
         ( $sections | each {|s| LI (A {href: $"($p)#($s.0)"} $s.1) } )
         (LI {class: "nav-page"} (A {href: "/notes" class: (if $here == "/notes" { "current" } else { "" })} "Notes"))
+        (LI {class: "nav-page"} (A {href: "/glossary" class: (if $here == "/glossary" { "current" } else { "" })} "Glossary"))
       )
     )
     (BUTTON {class: "theme-toggle" data-act: "toggle-theme"}
@@ -771,16 +772,47 @@ def notes-page [cfg: record, sections: list] {
   )
 }
 
+# The glossary content lives in glossary.md and is rendered to HTML with .md at
+# load. The page chrome (title, lede, sidebar) is here; the markdown is just the
+# definition list of terms.
+def glossary-page [sections: list] {
+  let terms = (open --raw ($env.PWD | path join "glossary.md") | decode utf-8 | .md)
+  (HTML
+    (head-block {
+      title: "Glossary | understand stellar"
+      description: "Definitions of the terms used across this Stellar reference: tokens, shades, -on and -dim, WCAG, APCA, and more."
+      path: "glossary"
+      image: "og.png"
+    })
+    (BODY
+      (DIV {class: "shell"}
+        (sidebar $sections "/glossary")
+        (MAIN {class: "content"}
+          (DIV {class: "intro"}
+            (H1 "Glossary")
+            (P {class: "lede"} "The terms used across this site, defined.")
+          )
+          $terms
+        )
+      )
+      (DIV {class: "toast-copied" id: "toast"} "")
+      (page-script)
+    )
+  )
+}
+
 # Each page is deterministic from the config, so render once at startup and
 # serve the cached HTML. A reload re-sources this file and re-renders; without
 # the cache the full token reference rebuilds on every request (~4s).
 let HOME = (home-page $cfg $SECTIONS)
 let NOTES = (notes-page $cfg $SECTIONS)
+let GLOSSARY = (glossary-page $SECTIONS)
 
 {|req|
   dispatch $req [
     (route {path: "/"} {|req ctx| $HOME })
     (route {path: "/notes"} {|req ctx| $NOTES })
+    (route {path: "/glossary"} {|req ctx| $GLOSSARY })
 
     (route {path-matches: "/assets/:file"} {|req ctx|
       .static ($env.PWD | path join "assets") $ctx.file

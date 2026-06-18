@@ -2,7 +2,8 @@
   "fmt": {
     "exclude": [
       "assets/stellar.css",
-      "stellar.config.json"
+      "stellar.config.json",
+      "glossary.md"
     ]
   }
 }

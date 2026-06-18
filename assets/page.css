@@ -30,6 +30,26 @@ a {
   color: var(--primary-7);
 }
 
+/* inline code in prose (the glossary references tokens by name). The
+   interactive copy chip is .token; this is just for reading. */
+code {
+  font-family: var(--font-mono);
+}
+
+/* definition lists: the glossary renders to these raw tags */
+dl {
+  max-width: 64ch;
+  margin: var(--size-2) 0;
+}
+dt {
+  font-weight: var(--font-weight-semi-bold);
+  margin-top: var(--size-2);
+}
+dd {
+  margin: var(--size--1) 0 0;
+  padding-left: var(--size-2);
+}
+
 /* ---- shell: sticky sidebar + content ---------------------------- */
 
 .shell {
@@ -884,6 +904,12 @@ h3 {
   margin-top: var(--size-0);
   padding-top: var(--size-0);
   border-top: var(--border-width-1) solid var(--neutral-4);
+}
+/* a run of page links sits under one divider, not one each */
+.section-nav .nav-page + .nav-page {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 .section-nav a.current {
   color: var(--neutral-1-on);
