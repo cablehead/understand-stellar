@@ -6,8 +6,8 @@ used. Build it like a box of Lego.
 ## Every value is a token
 
 Color, size, font, weight, radius, shadow, motion: each comes from a Stellar
-token. No literals. A magic number in the CSS is a token that has not been found
-yet.
+token. Do not write literals. If a value is a raw number, there is a token for
+it you should use instead.
 
 ## Raw tags are the blocks in the box
 
