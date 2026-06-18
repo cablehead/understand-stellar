@@ -939,6 +939,18 @@ a {
   border-top: var(--border-width-1) solid var(--neutral-3);
 }
 
+/* the headline change, scannable: bold mono, token name in the accent */
+.change {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--neutral-1-on);
+  margin: var(--size-0) 0 var(--size-1);
+}
+.change code {
+  color: var(--primary-7);
+}
+
 .sweep {
   margin: var(--size-1) 0;
 }
