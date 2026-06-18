@@ -120,7 +120,7 @@
       "toneBiasPercentage": 5,
       "apca": {
         "onTargetLc": 90,
-        "dimTargetLc": 30
+        "dimTargetLc": 65
       }
     },
     "named": {
@@ -132,7 +132,7 @@
       "toneStep": 4,
       "apca": {
         "onTargetLc": 90,
-        "dimTargetLc": 30
+        "dimTargetLc": 65
       },
       "colors": [
         {
@@ -269,7 +269,7 @@
       "toneSteps": 12,
       "apca": {
         "onTargetLc": 90,
-        "dimTargetLc": 30
+        "dimTargetLc": 65
       },
       "qualitativeExport": true,
       "divergingExport": [
@@ -604,7 +604,7 @@
       "invertDarkMode": true,
       "apca": {
         "onTargetLc": 90,
-        "dimTargetLc": 30,
+        "dimTargetLc": 65,
         "surfaceTargetLc": 30
       }
     }
