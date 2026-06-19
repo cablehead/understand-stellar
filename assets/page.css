@@ -153,11 +153,11 @@ dd {
   font-size: var(--font-size-7);
   font-weight: var(--font-weight-extra-bold);
   letter-spacing: var(--font-letter-spacing--2);
-  /* the line-height tokens are absolute rems tuned to body sizes (scale tops
-     out near 1.9rem), so none fit a fluid display heading this large; a
-     unitless ratio scales the leading with the font and avoids overlap on
-     wrap. */
-  line-height: 1.05;
+  /* Stellar's line-height tokens are absolute rems tuned to body sizes (the
+     scale tops out near 1.9rem), so none fit large display text; a unitless
+     ratio scales the leading with the font and avoids overlap on wrap. 1.1 is
+     the shared display ratio, also used by the type specimens. */
+  line-height: 1.1;
   margin: var(--size-2) 0 var(--size-1);
   text-wrap: balance;
 }
@@ -832,7 +832,7 @@ h3 {
   overflow-x: auto;
   font-family: var(--font-mono);
   font-size: var(--font-size--1);
-  line-height: 1.5;
+  line-height: var(--font-line-height-2);
 }
 @media (max-width: 720px) {
   .composer {
