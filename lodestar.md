@@ -16,6 +16,19 @@ classes. Done right they build about 80% of the site on their own, and most
 markup needs no class at all. Reach here first and stay here as long as the tags
 carry the job. Strong base typography is the foundation everything else sits on.
 
+## Layout primitives arrange the blocks
+
+Tags cannot say "lay these out in a row" or "in a responsive grid." That
+arranging is the one job left to a small, fixed set of classes: `.row` (a
+wrapping flex row), `.stack` (a flex column), `.grid` (a responsive grid). They
+carry layout only, direction, gap, columns, and take their sizes from tokens.
+Reach for one to arrange tags and blocks before building a new block. Arranging
+pieces you already have is cheaper than inventing one.
+
+The set is closed. It exists because layout recurs in every section and no tag
+expresses it. Adding a new primitive is itself a two-hammer decision. A class
+that styles content rather than arranging it does not belong in this set.
+
 ## Server components are the add-on blocks
 
 Some blocks do not come in the box: a color ramp, a transition composer, a
