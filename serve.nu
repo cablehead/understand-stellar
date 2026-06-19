@@ -381,7 +381,7 @@ def borders-section [cfg: record] {
 def elevation-section [cfg: record] {
   (SECTION {class: "section"}
     (section-head "elevation" "Elevation"
-      "A shadow scale for how far a surface sits off the page. Each step stacks soft layers so the shadow reads as real, not a flat drop; the higher the step, the more it lifts, a card low, a dropdown higher, a dialog highest. Negative steps press inward for inset fields. Step 0 is none.")
+      "A shadow scale for how far a surface sits off the page. Each step stacks soft layers so the shadow reads as real, not a flat drop. The higher the step, the more the surface lifts: a low step for a card, a higher one for a dropdown, the highest for a dialog. Negative steps press inward for inset fields. Step 0 is none.")
     (if (not ($cfg.colors.shadows.disabled)) {
       let outer = ($cfg.colors.shadows.outer.steps)
       let inner = ($cfg.colors.shadows.inner.steps)
